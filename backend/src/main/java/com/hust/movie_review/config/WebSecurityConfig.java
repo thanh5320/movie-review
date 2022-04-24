@@ -1,6 +1,7 @@
-package com.hust.movie_review.config.security;
+package com.hust.movie_review.config;
 
 import com.hust.movie_review.config.entrypoint.AuthEntryPoint;
+import com.hust.movie_review.config.security.JwtAuthenticationFilter;
 import com.hust.movie_review.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -52,9 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(authEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests()
-                .antMatchers("api/auth/**").permitAll()
-                .antMatchers("api/test/**").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/test/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

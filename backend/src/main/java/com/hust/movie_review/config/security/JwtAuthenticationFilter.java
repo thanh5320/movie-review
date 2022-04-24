@@ -1,6 +1,5 @@
 package com.hust.movie_review.config.security;
 
-import com.hust.movie_review.config.security.JwtTokenProvider;
 import com.hust.movie_review.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

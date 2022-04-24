@@ -10,7 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class JwtResponse {
     private String token;
-    private String type = "Bearer";
+    private String type;
     private User user;
     private Set<String> roles;
 }

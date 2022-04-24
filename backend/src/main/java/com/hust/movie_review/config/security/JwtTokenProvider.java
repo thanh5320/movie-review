@@ -1,5 +1,6 @@
 package com.hust.movie_review.config.security;
 
+import com.hust.movie_review.common.Constants;
 import com.hust.movie_review.models.CustomUserDetails;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -10,20 +11,17 @@ import java.util.Date;
 @Component
 @Slf4j
 public class JwtTokenProvider {
-    private final String JWT_SECRET = "1234567123";
-    private final long JWT_EXPIRATION = 604800000L;
-
     /**
      * Generate token from user's information
      */
     public String generateToken(CustomUserDetails customUserDetails){
         Date now = new Date();
-        Date expiration = new Date(now.getTime() + JWT_EXPIRATION);
+        Date expiration = new Date(now.getTime() + Constants.JWT_EXPIRATION);
 
         return Jwts.builder().setSubject(Long.toString(customUserDetails.getUser().getId()))
                 .setIssuedAt(now)
                 .setExpiration(expiration)
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                .signWith(SignatureAlgorithm.HS512, Constants.JWT_SECRET)
                 .compact();
     }
 
@@ -32,7 +30,7 @@ public class JwtTokenProvider {
      */
     public Long getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(JWT_SECRET)
+                .setSigningKey(Constants.JWT_SECRET)
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -41,7 +39,7 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(Constants.JWT_SECRET).parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException ex) {
             // write log: token invalid

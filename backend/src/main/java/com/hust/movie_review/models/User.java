@@ -1,12 +1,14 @@
 package com.hust.movie_review.models;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Accessors(chain = true)
 @Table(name = "users")
 @Entity
@@ -22,16 +24,12 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(name = "status", nullable = false)
     private boolean status;
 
     @OneToMany(mappedBy="user")
@@ -40,7 +38,7 @@ public class User {
     @OneToMany(mappedBy="user")
     private Set<Review> reviews;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

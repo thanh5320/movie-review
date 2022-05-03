@@ -26,6 +26,6 @@ public class Actor {
     @Column(name = "gender")
     private String gender;
 
-    @ManyToMany(mappedBy = "actors")
+    @ManyToMany(mappedBy = "actors", fetch = FetchType.EAGER)
     Set<Movie> movies;
 }

@@ -7,7 +7,6 @@ import lombok.Data;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
 public class JwtResponse {
     private String token;
     private String type;

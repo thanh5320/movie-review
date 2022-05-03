@@ -1,12 +1,14 @@
 package com.hust.movie_review.models;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Accessors(chain = true)
 @Table(name = "roles")
 @Entity
@@ -22,6 +24,6 @@ public class Role {
     @Column(name = "display_name", nullable = false)
     private String displayName;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     Set<User> users;
 }

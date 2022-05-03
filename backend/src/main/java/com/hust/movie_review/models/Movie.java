@@ -36,7 +36,7 @@ public class Movie {
     @Column(name = "trailer")
     private String trailer;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "movie_actor",
             joinColumns = @JoinColumn(name = "movie_id"),

@@ -1,55 +1,31 @@
 package com.hust.movie_review.controllers;
 
-import com.hust.movie_review.config.security.JwtTokenProvider;
-import com.hust.movie_review.dto.JwtResponse;
+import com.hust.movie_review.common.data.response.DfResponse;
+import com.hust.movie_review.data.response.user.LoginResponse;
 import com.hust.movie_review.dto.LoginRequest;
-import com.hust.movie_review.models.CustomUserDetails;
-import com.hust.movie_review.repositories.RoleRepository;
-import com.hust.movie_review.repositories.UserRepository;
-import com.hust.movie_review.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import com.hust.movie_review.service.IUserService;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import javax.validation.Valid;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("api/auth")
 public class AuthController {
-    @Autowired
-    AuthenticationManager authenticationManager;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    RoleRepository roleRepository;
-    @Autowired
-    PasswordEncoder passwordEncoder;
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    UserService userService;
+    private final IUserService userService;
+    private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> authenticationUser(@Validated @RequestBody LoginRequest request){
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtTokenProvider.generateToken(userService.loadUserByUsername(request.getUsername()));
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Set<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
 
-        return ResponseEntity.ok(new JwtResponse(jwt, "Bearer", userDetails.getUser(), roles));
+    public AuthController(IUserService userService, AuthenticationManager authenticationManager) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+    }
+
+    @PostMapping("login")
+    public DfResponse<LoginResponse> login(@Valid @RequestBody LoginRequest request){
+        return DfResponse.okEntity(userService.login(request, authenticationManager));
     }
 }

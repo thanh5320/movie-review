@@ -20,7 +20,6 @@ public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint
                          AuthenticationException authException){
         log.error("Unauthorized error: {}", authException.getMessage());
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
-        throw new ApiException("Error: Unauthorized");
     }
 }
 

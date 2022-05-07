@@ -25,7 +25,7 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    public DfResponse<LoginResponse> login(@Valid @RequestBody LoginRequest request){
+    public DfResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request){
         return DfResponse.okEntity(userService.login(request, authenticationManager));
     }
 }

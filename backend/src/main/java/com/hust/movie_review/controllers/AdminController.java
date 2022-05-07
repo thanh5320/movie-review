@@ -23,7 +23,7 @@ public class AdminController {
     }
 
     @PostMapping("create")
-    public DfResponse<UserInfoResponse> createUser(@Valid @RequestBody CreateUserRequest request){
+    public DfResponse<UserInfoResponse> createUser(@RequestBody @Valid CreateUserRequest request){
         return DfResponse.okEntity(userService.createUser(request));
     }
 }

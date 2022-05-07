@@ -75,7 +75,7 @@ public class UserServiceImpl implements IUserService {
         String jwt = jwtUtils.generateJwtToken(userDetails);
 
         Set<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(item -> item.getAuthority().split("_")[1])
                 .collect(Collectors.toSet());
 
         return new LoginResponse()

@@ -18,8 +18,6 @@ public class Country {
     private String name;
     @Column(name = "continent", nullable = false)
     private String continent;
-    @OneToMany(mappedBy="country")
+    @OneToMany(mappedBy="country", fetch = FetchType.LAZY)
     private Set<Actor> actors;
-    @OneToMany(mappedBy="country")
-    private Set<Movie> movies;
 }

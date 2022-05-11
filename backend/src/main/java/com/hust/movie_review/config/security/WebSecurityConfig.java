@@ -1,6 +1,6 @@
 package com.hust.movie_review.config.security;
 
-import com.hust.movie_review.service.IUserService;
+import com.hust.movie_review.service.template.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,7 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/**").permitAll().and()
+                .authorizeRequests().antMatchers("/api/movie/listing").permitAll()
                 .antMatchers("/api/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated();
 

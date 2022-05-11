@@ -2,8 +2,8 @@ package com.hust.movie_review.controllers;
 
 import com.hust.movie_review.common.data.response.DfResponse;
 import com.hust.movie_review.data.response.user.LoginResponse;
-import com.hust.movie_review.dto.LoginRequest;
-import com.hust.movie_review.service.IUserService;
+import com.hust.movie_review.data.request.LoginRequest;
+import com.hust.movie_review.service.template.IUserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +17,6 @@ import javax.validation.Valid;
 public class AuthController {
     private final IUserService userService;
     private final AuthenticationManager authenticationManager;
-
 
     public AuthController(IUserService userService, AuthenticationManager authenticationManager) {
         this.userService = userService;

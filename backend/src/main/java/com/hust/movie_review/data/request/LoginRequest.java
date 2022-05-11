@@ -1,4 +1,4 @@
-package com.hust.movie_review.dto;
+package com.hust.movie_review.data.request;
 
 import lombok.Data;
 

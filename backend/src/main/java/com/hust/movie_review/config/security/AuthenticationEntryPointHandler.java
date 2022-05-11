@@ -1,7 +1,6 @@
 package com.hust.movie_review.config.security;
 
 
-import com.hust.movie_review.config.exception.ApiException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
@@ -19,7 +18,9 @@ public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException){
         log.error("Unauthorized error: {}", authException.getMessage());
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.getOutputStream().println("{ \"error\": \" Unauthorized \" }");
     }
 }
 

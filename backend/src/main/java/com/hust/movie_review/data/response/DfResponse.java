@@ -1,4 +1,4 @@
-package com.hust.movie_review.common.data.response;
+package com.hust.movie_review.data.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hust.movie_review.common.constant.Constant;

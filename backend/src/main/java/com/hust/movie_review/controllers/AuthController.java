@@ -1,6 +1,6 @@
 package com.hust.movie_review.controllers;
 
-import com.hust.movie_review.common.data.response.DfResponse;
+import com.hust.movie_review.data.response.DfResponse;
 import com.hust.movie_review.data.response.user.LoginResponse;
 import com.hust.movie_review.data.request.LoginRequest;
 import com.hust.movie_review.service.template.IUserService;

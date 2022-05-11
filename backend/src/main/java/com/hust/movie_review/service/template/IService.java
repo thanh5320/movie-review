@@ -9,5 +9,5 @@ public interface IService<T> {
 
     T detail(int id);
 
-    void delete(int id);
+    boolean delete(int id);
 }

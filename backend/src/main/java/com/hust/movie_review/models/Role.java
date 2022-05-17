@@ -1,5 +1,6 @@
 package com.hust.movie_review.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -24,6 +25,7 @@ public class Role {
     @Column(name = "display_name", nullable = false)
     private String displayName;
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roles")
+    @JsonBackReference
     Set<User> users;
 }

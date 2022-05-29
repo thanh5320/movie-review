@@ -1,6 +1,7 @@
 package com.hust.movie_review.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -16,16 +17,22 @@ public class Actor {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
+
     @Column(name = "full_name")
     private String fullName;
+
     @ManyToOne
     @JoinColumn(name = "country_code", nullable = false)
+    @JsonBackReference
     private Country country;
+
     @Column(name = "year_birthday")
     private int yearBirthday;
+
     @Column(name = "gender")
     private String gender;
 
-    @ManyToMany(mappedBy = "actors", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "actors")
+    @JsonBackReference
     Set<Movie> movies;
 }

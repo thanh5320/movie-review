@@ -1,7 +1,7 @@
 package com.hust.movie_review.data.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.hust.movie_review.common.constant.Constant;
+import com.hust.movie_review.common.Constants;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.http.HttpStatus;
@@ -43,15 +43,15 @@ public class DfResponse<T> {
 
     public static <T> DfResponse<T> okEntity(T data) {
         return new DfResponse<T>()
-                .setCode(Constant.SUCCESS_CODE)
-                .setMessage(Constant.SUCCESS_MESSAGE)
+                .setCode(Constants.SUCCESS_CODE)
+                .setMessage(Constants.SUCCESS_MESSAGE)
                 .setData(data);
     }
 
     public static <T> DfResponse<T> okEntity() {
         return new DfResponse<T>()
-                .setCode(Constant.SUCCESS_CODE)
-                .setMessage(Constant.SUCCESS_MESSAGE)
+                .setCode(Constants.SUCCESS_CODE)
+                .setMessage(Constants.SUCCESS_MESSAGE)
                 .setData(null);
     }
 

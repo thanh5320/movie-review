@@ -1,5 +1,6 @@
 package com.hust.movie_review.config.security;
 
+import com.hust.movie_review.common.Constants;
 import com.hust.movie_review.service.template.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -56,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll().and()
                 .authorizeRequests().antMatchers("/api/movie/listing").permitAll().and()
+                .authorizeRequests().antMatchers("/api/movie/top10").permitAll().and()
                 .authorizeRequests().antMatchers("/api/movie/detail/**").permitAll().and()
                 .authorizeRequests().antMatchers("/api/category/listing").permitAll().and()
                 .authorizeRequests().antMatchers("/api/category/detail/**").permitAll().and()
@@ -63,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/api/role/detail/**").permitAll().and()
                 .authorizeRequests().antMatchers("/api/actor/listing").permitAll().and()
                 .authorizeRequests().antMatchers("/api/actor/detail/**").permitAll()
-                .antMatchers("/api/admin/**").hasAnyRole("ADMIN")
+                .antMatchers("/api/admin/**").hasAnyRole(Constants.ROLE_ADMIN)
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

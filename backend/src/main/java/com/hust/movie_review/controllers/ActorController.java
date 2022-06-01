@@ -19,12 +19,12 @@ public class ActorController {
         this.actorService = actorService;
     }
 
-    @PostMapping("listing")
+    @GetMapping("listing")
     public DfResponse<List<Actor>> listing(){
         return DfResponse.okEntity(actorService.listing());
     }
 
-    @PostMapping("detail/{id}")
+    @GetMapping("detail/{id}")
     public DfResponse<Actor> detail(@PathVariable int id){
         return DfResponse.okEntity(actorService.detail(id));
     }

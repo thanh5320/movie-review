@@ -3,6 +3,7 @@ package com.hust.movie_review.data.request.user;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ public class CreateUserRequest {
     @NotEmpty(message = "password is not empty!")
     private String password;
 
+    @Email(message = "Email not validate")
     private String email;
 
     @NotEmpty(message = "role is not empty!")

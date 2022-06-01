@@ -19,12 +19,12 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping("listing")
+    @GetMapping("listing")
     public DfResponse<List<Category>> listing(){
         return DfResponse.okEntity(categoryService.listing());
     }
 
-    @PostMapping("detail/{id}")
+    @GetMapping("detail/{id}")
     public DfResponse<Category> detail(@PathVariable int id){
         return DfResponse.okEntity(categoryService.detail(id));
     }

@@ -2,7 +2,6 @@ package com.hust.movie_review.service;
 
 import com.hust.movie_review.config.exception.InValidException;
 import com.hust.movie_review.config.security.JwtUtils;
-import com.hust.movie_review.data.mapper.user.UserMapper;
 import com.hust.movie_review.data.request.user.CreateUserRequest;
 import com.hust.movie_review.data.response.user.LoginResponse;
 import com.hust.movie_review.data.response.user.UserInfoResponse;
@@ -20,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -31,50 +31,67 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
     private final RoleRepository roleRepository;
     private final JwtUtils jwtUtils;
 
+    private final PasswordEncoder passwordEncoder;
     public UserServiceImpl(UserRepository userRepository,
-                           UserMapper userMapper,
                            RoleRepository roleRepository,
-                           JwtUtils jwtUtils) {
+                           JwtUtils jwtUtils, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
         this.roleRepository = roleRepository;
         this.jwtUtils = jwtUtils;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @SneakyThrows
     @Override
     public UserInfoResponse createUser(CreateUserRequest request) {
-//    TODO: check info email, username, password
         checkAlreadyUser(request);
-        User newUser = userMapper.createUserToUser(request);
+
+        // set property for new user
+        User newUser = new User();
+        newUser.setUsername(request.getUsername());
+        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        newUser.setStatus(true);
+        newUser.setEmail(request.getEmail());
+
+        // get role object from role name string and assign for new user
         Set<Role> roles = Optional.ofNullable(request.getRoles())
                 .orElse(new HashSet<>())
                 .stream()
-                .map(item -> roleRepository.findByName(item))
+                .map(roleRepository::findByName)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
         newUser.setRoles(roles);
 
+        // save new user
         User userEntity = userRepository.save(newUser);
-        UserInfoResponse response = userMapper.UserToUserInfo(userEntity);
+
+        // set response
+        UserInfoResponse response = new UserInfoResponse();
+        response.setEmail(userEntity.getEmail());
+        response.setUsername(userEntity.getUsername());
+        response.setFulName(userEntity.getFullName());
+        response.setStatus(true);
         response.setRoles(request.getRoles());
+
         return response;
     }
 
     @Override
     public LoginResponse login(LoginRequest request, AuthenticationManager authenticationManager) {
+        // validate username and password
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
+        // set token
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String jwt = jwtUtils.generateJwtToken(userDetails);
 
+        // get role of user
         Set<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority().split("_")[1])
                 .collect(Collectors.toSet());
@@ -99,11 +116,12 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    @SneakyThrows
     @Override
     public UserDetailsImpl loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (ObjectUtils.isEmpty(user)) {
-            new UsernameNotFoundException("User Not Found with username: " + username);
+            throw new UsernameNotFoundException("User Not Found with username: " + username);
         }
         return UserDetailsImpl.build(user);
     }

@@ -24,6 +24,12 @@ public class MovieController {
         return DfResponse.okEntity(movies);
     }
 
+    @GetMapping("top10")
+    public DfResponse<List<Movie>> getTop10(){
+        List<Movie> moviesTop10 = movieService.getTop10Movies();
+        return DfResponse.okEntity(moviesTop10);
+    }
+
     @PostMapping("store")
     public DfResponse<Movie> store(@RequestBody @Valid StoreRequest request){
         this.movieService.insert(request);

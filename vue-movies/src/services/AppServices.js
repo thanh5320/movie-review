@@ -20,7 +20,7 @@ export default {
     return API.get(url);
   },
   getTop(type) {
-    const url = `${type}/top_rated?api_key=${key}&language=${language}&page=1`;
+    const url = `${type}/top10`;
     return API.get(url);
   },
   getMoviesUpcoming(page){

@@ -1,16 +1,19 @@
 package com.hust.movie_review.service;
 
+import com.hust.movie_review.common.OffsetBasedPageable;
 import com.hust.movie_review.data.request.movie.StoreRequest;
 import com.hust.movie_review.models.Country;
 import com.hust.movie_review.models.Movie;
 import com.hust.movie_review.repositories.CountryRepository;
 import com.hust.movie_review.repositories.MovieRepository;
 import com.hust.movie_review.service.template.IMovieService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieServiceImpl implements IMovieService {
@@ -25,6 +28,12 @@ public class MovieServiceImpl implements IMovieService {
     @Override
     public List<Movie> getMovies() {
         return new ArrayList<>(movieRepository.findAll());
+    }
+
+    @Override
+    public List<Movie> getTop10Movies(){
+        Pageable pageable = new OffsetBasedPageable(0, 10);
+        return movieRepository.findAll(pageable).get().collect(Collectors.toList());
     }
 
     @Override

@@ -19,12 +19,12 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-    @PostMapping("listing")
+    @GetMapping("listing")
     public DfResponse<List<Role>> listing(){
         return DfResponse.okEntity(roleService.listing());
     }
 
-    @PostMapping("detail/{id}")
+    @GetMapping("detail/{id}")
     public DfResponse<Role> detail(@PathVariable int id){
         return DfResponse.okEntity(roleService.detail(id));
     }

@@ -8,6 +8,8 @@ import java.util.List;
 public interface IMovieService {
     List<Movie> getMovies();
 
+    List<Movie> getTop10Movies();
+
     Movie detail(int id);
 
     Movie insert(StoreRequest movie);

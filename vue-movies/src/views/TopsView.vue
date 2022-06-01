@@ -44,12 +44,10 @@ export default {
   methods: {
     async fetchTops() {
       try {
-        const [responseMovie, responseTv] = await Promise.all([
+        const [responseMovie] = await Promise.all([
           AppServices.getTop('movie'),
-          AppServices.getTop('tv')
         ]);
-        this.resultsMovie = responseMovie.data.results.slice(0, this.numItems);
-        this.resultsTv = responseTv.data.results.slice(0, this.numItems);
+        this.resultsMovie = responseMovie.data.data;
       } catch (e) {
         this.error = e;
       } finally {

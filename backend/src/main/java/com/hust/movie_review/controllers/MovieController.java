@@ -20,14 +20,14 @@ public class MovieController {
 
     @GetMapping("/listing")
     public DfResponse<List<Movie>> listing(){
-        List<Movie> movies = movieService.getMovies();
+        List<Movie> movies = movieService.listing();
         return DfResponse.okEntity(movies);
     }
 
-    @GetMapping("top10")
-    public DfResponse<List<Movie>> getTop10(){
-        List<Movie> moviesTop10 = movieService.getTop10Movies();
-        return DfResponse.okEntity(moviesTop10);
+    @GetMapping("top/{top}")
+    public DfResponse<List<Movie>> getTop(@PathVariable int top){
+        List<Movie> topMovie = movieService.getTopMovie(top);
+        return DfResponse.okEntity(topMovie);
     }
 
     @PostMapping("store")

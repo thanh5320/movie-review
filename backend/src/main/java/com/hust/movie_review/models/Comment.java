@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Accessors(chain = true)
@@ -22,4 +23,10 @@ public class Comment {
     private Movie movie;
     @Column(name = "comment", nullable = false)
     private String comment;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updateAt;
 }

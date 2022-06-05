@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -47,6 +48,15 @@ public class Movie {
 
     @Column(name = "trailer")
     private String trailer;
+
+    @Column(name = "thumbnail")
+    private String thumbnail;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updateAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

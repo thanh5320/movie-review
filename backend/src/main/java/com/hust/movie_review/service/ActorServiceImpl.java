@@ -11,15 +11,15 @@ import com.hust.movie_review.service.template.IActorService;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ActorServiceImpl implements IActorService {
+public class ActorServiceImpl extends BaseService<Actor> implements IActorService {
     IActorRepository actorRepository;
     ICountryRepository countryRepository;
 
     public ActorServiceImpl(IActorRepository actorRepository, ICountryRepository countryRepository){
+        super(actorRepository);
         this.actorRepository = actorRepository;
         this.countryRepository = countryRepository;
     }
@@ -53,33 +53,5 @@ public class ActorServiceImpl implements IActorService {
         Country country = countryRepository.findByCode(request.getCountryCode());
         actor.setCountry(country);
         return actorRepository.save(actor);
-    }
-
-    @Override
-    public List<Actor> listing() {
-        return actorRepository.findAll();
-    }
-
-    @Override
-    public Actor detail(int id) {
-        Optional<Actor> optional = actorRepository.findById(id);
-        return optional.orElse(null);
-    }
-
-    @SneakyThrows
-    @Override
-    public boolean delete(int id) {
-        Optional<Actor> optional = actorRepository.findById(id);
-        if(optional.isEmpty()){
-            throw new ApiException("Không tìm thấy diễn viên có id tương ứng");
-        }
-
-        try {
-            actorRepository.delete(optional.get());
-        } catch (Exception exception){
-            return false;
-        }
-
-        return true;
     }
 }

@@ -13,10 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RoleServiceImpl implements IRoleService {
+public class RoleServiceImpl extends BaseService<Role> implements IRoleService {
     RoleRepository roleRepository;
 
     public RoleServiceImpl(RoleRepository roleRepository){
+        super(roleRepository);
         this.roleRepository = roleRepository;
     }
 
@@ -42,33 +43,5 @@ public class RoleServiceImpl implements IRoleService {
         role.setDisplayName(request.getDisplayName());
 
         return roleRepository.save(role);
-    }
-
-    @Override
-    public List<Role> listing() {
-        return roleRepository.findAll();
-    }
-
-    @Override
-    public Role detail(int id) {
-        Optional<Role> optional = roleRepository.findById(id);
-        return optional.orElse(null);
-    }
-
-    @SneakyThrows
-    @Override
-    public boolean delete(int id) {
-        Optional<Role> optional = roleRepository.findById(id);
-        if(optional.isEmpty()){
-            throw new ApiException("Không tìm thấy vai trò có id tương ứng");
-        }
-
-        try {
-            roleRepository.delete(optional.get());
-        } catch (Exception exception){
-            return false;
-        }
-
-        return true;
     }
 }

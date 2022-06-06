@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -28,4 +29,10 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     @JsonBackReference
     Set<User> users;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updateAt;
 }

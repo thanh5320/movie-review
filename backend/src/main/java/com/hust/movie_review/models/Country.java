@@ -1,9 +1,11 @@
 package com.hust.movie_review.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -19,5 +21,12 @@ public class Country {
     @Column(name = "continent", nullable = false)
     private String continent;
     @OneToMany(mappedBy="country", fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<Actor> actors;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updateAt;
 }

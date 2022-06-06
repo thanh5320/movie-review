@@ -29,8 +29,8 @@ export default {
   computed: {
     ...mapGetters(['imgPath']),
     urlImg() {
-      return this.item.poster_path != null
-        ? `${this.imgPath}${this.item.poster_path}`
+      return this.item.thumbnail != null
+        ? `${this.item.thumbnail}`
         : require('@/assets/images/poster-not-available.png');
     },
     mediaType(){

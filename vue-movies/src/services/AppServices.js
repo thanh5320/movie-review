@@ -12,7 +12,7 @@ export default {
     return API.get(url);
   },
   getItemInfo(id, type) {
-    const url = `${type}/${id}?api_key=${key}&language=${language}`;
+    const url = `movie/detail/${id}?type=${type}`;
     return API.get(url);
   },
   getCast(id, type) {
@@ -20,7 +20,7 @@ export default {
     return API.get(url);
   },
   getTop(type) {
-    const url = `${type}/top10`;
+    const url = `movie/top/10?type=${type}`;
     return API.get(url);
   },
   getMoviesUpcoming(page){

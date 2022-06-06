@@ -1,10 +1,12 @@
 package com.hust.movie_review.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -48,12 +50,21 @@ public class Movie {
     @Column(name = "trailer")
     private String trailer;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @Column(name = "thumbnail")
+    private String thumbnail;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updateAt;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "movie_actor",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id"))
-    @JsonBackReference
+    @JsonManagedReference
     Set<Actor> actors;
 
     @OneToMany(mappedBy="user")

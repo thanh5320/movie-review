@@ -11,8 +11,8 @@ import java.io.Serializable;
 public class OffsetBasedPageable implements Pageable, Serializable {
     private static final long serialVersionUID = -25822477129613575L;
 
-    private int limit;
-    private int offset;
+    private final int limit;
+    private final int offset;
     private final Sort sort;
 
     /**
@@ -33,6 +33,10 @@ public class OffsetBasedPageable implements Pageable, Serializable {
         this.limit = limit;
         this.offset = offset;
         this.sort = sort;
+    }
+
+    public OffsetBasedPageable(int offset, int limit, String sortColumn) {
+        this(offset, limit, Sort.by(sortColumn));
     }
 
     /**
@@ -86,7 +90,7 @@ public class OffsetBasedPageable implements Pageable, Serializable {
 
     @Override
     public Pageable withPage(int pageNumber) {
-        return null;
+        return new OffsetBasedPageable(pageNumber * getPageSize(), getPageSize(), getSort());
     }
 
     @Override

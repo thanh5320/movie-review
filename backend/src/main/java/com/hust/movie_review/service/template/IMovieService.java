@@ -5,16 +5,9 @@ import com.hust.movie_review.models.Movie;
 
 import java.util.List;
 
-public interface IMovieService {
-    List<Movie> getMovies();
-
-    List<Movie> getTop10Movies();
-
-    Movie detail(int id);
-
+public interface IMovieService extends  IService<Movie>{
+    List<Movie> getTopMovie(int top);
     Movie insert(StoreRequest movie);
 
     void update(int id, Movie movie);
-
-    void delete(int id);
 }

@@ -1,10 +1,10 @@
 package com.hust.movie_review.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -25,4 +25,10 @@ public class Category {
 
     @OneToMany(mappedBy="country")
     private Set<Movie> movies;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updateAt;
 }

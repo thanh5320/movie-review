@@ -9,26 +9,15 @@ import com.hust.movie_review.service.template.ICategoryService;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CategoryServiceImpl implements ICategoryService {
+public class CategoryServiceImpl extends BaseService<Category> implements ICategoryService {
     CategoryRepository categoryRepository;
 
     public CategoryServiceImpl(CategoryRepository categoryRepository){
+        super(categoryRepository);
         this.categoryRepository = categoryRepository;
-    }
-
-    @Override
-    public List<Category> listing() {
-        return categoryRepository.findAll();
-    }
-
-    @Override
-    public Category detail(int id) {
-        Optional<Category> category = categoryRepository.findById(id);
-        return category.orElse(null);
     }
 
     @Override
@@ -54,23 +43,5 @@ public class CategoryServiceImpl implements ICategoryService {
         category.setName(request.getName());
         category.setDescription(request.getDescription());
         return categoryRepository.save(category);
-    }
-
-    @SneakyThrows
-    @Override
-    public boolean delete(int id) {
-        Optional<Category> optional = categoryRepository.findById(id);
-
-        if(optional.isEmpty()){
-            throw new ApiException("Không tìm thấy nhãn có id tương ứng");
-        }
-
-        try {
-            categoryRepository.delete(optional.get());
-        } catch (Exception exception){
-            return false;
-        }
-
-        return true;
     }
 }

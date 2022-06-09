@@ -1,6 +1,5 @@
 package com.hust.movie_review.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

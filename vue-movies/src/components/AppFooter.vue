@@ -1,17 +1,17 @@
 <template>
   <div class="footer">
     <ul>
-      <li>&#10004; Created with Vue.js</li>
+      <li>&#10004; Review film websites</li>
       <li>
         Data from
         <a href="https://www.themoviedb.org/documentation/api">The Movie DB</a>
       </li>
       <li>
-        <a href="https://github.com/ozoono/vue-movies">Repo on github</a>
+        <a href="https://github.com/thanh5320/movie-review">Repo on github</a>
       </li>
       <li>
-        &copy; by
-        <a href="https://github.com/ozoono/">ozoono</a>
+        &copy; Backend
+        <a href="https://github.com/thanh5320/movie-review/tree/master/backend">in github</a>
       </li>
     </ul>
   </div>

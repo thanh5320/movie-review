@@ -24,7 +24,7 @@ public class MovieServiceImpl extends BaseService<Movie> implements IMovieServic
     }
 
     public List<Movie> getTopMovie(int top){
-        Pageable pageable = new OffsetBasedPageable(0, top, "createdAt");
+        Pageable pageable = new OffsetBasedPageable(0, top, "rating");
         return this.listing(pageable);
     }
 

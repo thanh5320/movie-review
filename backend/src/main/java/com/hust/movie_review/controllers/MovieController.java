@@ -24,6 +24,12 @@ public class MovieController {
         return DfResponse.okEntity(movies);
     }
 
+    @GetMapping("/detail/{id}")
+    public DfResponse<Movie> detail(@PathVariable int id){
+        Movie movie = movieService.detail(id);
+        return DfResponse.okEntity(movie);
+    }
+
     @GetMapping("top/{top}")
     public DfResponse<List<Movie>> getTop(@PathVariable int top){
         List<Movie> topMovie = movieService.getTopMovie(top);

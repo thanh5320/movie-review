@@ -4,10 +4,12 @@ import com.hust.movie_review.data.response.DfResponse;
 import com.hust.movie_review.data.request.movie.StoreRequest;
 import com.hust.movie_review.models.Movie;
 import com.hust.movie_review.service.template.IMovieService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/movie")

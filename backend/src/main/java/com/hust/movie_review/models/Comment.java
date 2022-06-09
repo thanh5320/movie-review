@@ -1,6 +1,10 @@
 package com.hust.movie_review.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -10,6 +14,11 @@ import java.util.Date;
 @Accessors(chain = true)
 @Table(name = "comments")
 @Entity
+@ToString(exclude ={"movie", "user"})
+@EqualsAndHashCode(exclude = {"movie", "user"})
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Comment {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

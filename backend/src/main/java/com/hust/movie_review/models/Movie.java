@@ -1,8 +1,9 @@
 package com.hust.movie_review.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -13,6 +14,11 @@ import java.util.Set;
 @Accessors(chain = true)
 @Table(name = "movies")
 @Entity
+@ToString(exclude ={"category", "country", "actors", "comments", "reviews"})
+@EqualsAndHashCode(exclude = {"category", "country", "actors", "comments", "reviews"})
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Movie {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -24,12 +30,10 @@ public class Movie {
 
     @ManyToOne
     @JoinColumn(name="category_id", nullable = false)
-    @JsonBackReference
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "country_code", nullable = false)
-    @JsonBackReference
     private Country country;
 
     @Column(name = "director")
@@ -59,19 +63,16 @@ public class Movie {
     @Column(name = "updated_at")
     private Date updateAt;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "movie_actor",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id"))
-    @JsonManagedReference
     Set<Actor> actors;
 
     @OneToMany(mappedBy="user")
-    @JsonBackReference
     private Set<Comment> comments;
 
     @OneToMany(mappedBy="user")
-    @JsonBackReference
     private Set<Review> reviews;
 }

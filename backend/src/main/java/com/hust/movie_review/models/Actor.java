@@ -1,7 +1,11 @@
 package com.hust.movie_review.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -12,6 +16,11 @@ import java.util.Set;
 @Accessors(chain = true)
 @Table(name = "actors")
 @Entity
+@ToString(exclude = {"country", "movies"})
+@EqualsAndHashCode(exclude = {"country", "movies"})
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Actor {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -23,7 +32,6 @@ public class Actor {
 
     @ManyToOne
     @JoinColumn(name = "country_code", nullable = false)
-    @JsonBackReference
     private Country country;
 
     @Column(name = "year_birthday")
@@ -33,7 +41,6 @@ public class Actor {
     private String gender;
 
     @ManyToMany(mappedBy = "actors")
-    @JsonBackReference
     Set<Movie> movies;
 
     @Column(name = "created_at")

@@ -41,13 +41,13 @@ export default {
   },
   computed: {
     loadMore() {
-      return this.totalPages > this.page ? true : false;
+      return this.totalPages > this.page;
     },
     showResults() {
       return !this.searching && this.totalResults != null;
     },
     showMessage() {
-      return this.searching || this.error != '' ? true : false;
+      return this.searching || this.error !== '';
     },
     message() {
       return this.searching ? 'Searching...' : this.error;
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     async fetchData(action) {
-      if (action == 'INIT') {
+      if (action === 'INIT') {
         this.page = 1;
         this.searching = true;
         this.results = [];
@@ -72,11 +72,11 @@ export default {
           this.query,
           this.page
         );
-        this.results = this.results.concat(response.data.results);
-        this.totalResults = response.data.total_results;
-        this.totalPages = response.data.total_pages;
+        this.results = response.data.data;
+        this.totalPages = response.data.total;
+        this.totalResults = this.totalPages * 20;
       } catch (e) {
-        if (action == 'MORE') this.page--;
+        if (action === 'MORE') this.page--;
         this.error = e;
       } finally {
         this.searching = false;

@@ -35,10 +35,10 @@ export default {
   },
   computed: {
     loadMore() {
-      return this.totalPages > this.page ? true : false;
+      return this.totalPages > this.page;
     },
     showMessage() {
-      return this.searching || this.error != '' ? true : false;
+      return !!(this.searching || this.error !== '');
     }
   },
   created(){
@@ -46,19 +46,19 @@ export default {
   },
   methods: {
     async fetchData(action) {
-      if (action == 'INIT') {
-        this.page = 1;
+      if (action === 'INIT') {
+        this.page = 20;
       } else {
-        this.page++;
+        this.page += 20;
         this.loading = true;
       }
 
       try {
         const response = await AppServices.getMoviesUpcoming(this.page);
-        this.results = this.results.concat(response.data.results);
-        this.totalPages = response.data.total_pages;
+        this.results = response.data.data;
+        this.totalPages = response.data.total;
       } catch (e) {
-        if (action == 'MORE') this.page--;
+        if (action === 'MORE') this.page--;
         this.error = e;
       } finally {
         this.loading = false;

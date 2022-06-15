@@ -65,6 +65,9 @@ public class Movie {
     @Column(name = "updated_at")
     private Date updateAt;
 
+    @Column(name = "type")
+    private String type;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "movie_actor",

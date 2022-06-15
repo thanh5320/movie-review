@@ -8,7 +8,7 @@ export default {
     return API.get(`configuration?api_key=${key}`);
   },
   search(query, page) {
-    const url = `search/multi?api_key=${key}&language=${language}&query=${query}&page=${page}&include_adult=${include_adult}`;
+    const url = `movie/search?search=${query}&page=${page}`;
     return API.get(url);
   },
   getItemInfo(id, type) {
@@ -24,7 +24,7 @@ export default {
     return API.get(url);
   },
   getMoviesUpcoming(page){
-    const url = `movie/upcoming?api_key=${key}&language=${language}&page=${page}`;
+    const url = `movie/upcoming?type=film&page=1&page_size=${page}`;
     return API.get(url);
   },
   getMoviesLatest(page){
@@ -32,7 +32,7 @@ export default {
     return API.get(url);
   },
   getTvShowsOnAir(page){
-    const url = `tv/on_the_air?api_key=${key}&language=${language}&page=${page}`;
+    const url = `movie/upcoming?type=tv&page=1&page_size=${page}`;
     return API.get(url);    
   }
 

@@ -9,7 +9,7 @@
               <img :src="urlImg" />
             </figure>
             <ScoreIndicator 
-              :score="itemInfo.vote_average" 
+              :score="itemInfo.rating"
               size="82"
               stroke-width="5"
               stroke-color="#ff6633"
@@ -20,7 +20,7 @@
           <section class="info">
             <h1>{{ itemInfo.title }}</h1>
 
-            <p>{{ itemInfo.overview}}</p>
+            <p>{{ itemInfo.trailer}}</p>
 
             <h2 class="label">
               <font-awesome-icon 
@@ -30,13 +30,11 @@
                 {{ dateLabel }}</h2>
             <p>{{ this.date }}</p>
 
-            <h2 class="label">Genres</h2>
-            <ul>
-              <li v-for="(g, index) in genres" :key="index">{{ g }}</li>
-            </ul>
+            <h2 class="label">Actors</h2>
+            <p>{{ itemInfo.actor }}</p>
 
             <h2 class="label">CAST</h2>
-            <p>{{ itemInfo.cast }}</p>
+            <p>{{ itemInfo.actor }}</p>
 
             <h2 class="label">Website</h2>
             <p class="web" v-if="itemInfo.homepage != null">
@@ -65,24 +63,21 @@ export default {
     ...mapState(['type', 'itemInfo']),
     ...mapGetters(['imgPath']),
     showItemInfo() {
-      return !Object.keys(this.itemInfo).length ? false : true;
+      return Object.keys(this.itemInfo).length;
     },
     urlImg() {
-      return this.itemInfo.poster_path != null
-        ? `${this.imgPath}${this.itemInfo.poster_path}`
+      return this.itemInfo.thumbnail != null
+        ? this.itemInfo.thumbnail
         : require('@/assets/images/poster-not-available.png');
-    },
-    genres() {
-      return this.itemInfo.genres.map(g => g.name.toUpperCase());
     },
     date(){
       return (this.itemInfo.year) ? dayjs(this.itemInfo.year).format('MMM D, YYYY') : ''
     },
     dateLabel() {
-      return this.itemInfo.type == 'movie' ? 'Release date' : 'First air date';
+      return this.itemInfo.type === 'movie' ? 'Release date' : 'First air date';
     },
     icon(){
-      return this.itemInfo.type == 'movie' ? 'film' : 'tv';
+      return this.itemInfo.type === 'movie' ? 'film' : 'tv';
     }
   },
   methods: {

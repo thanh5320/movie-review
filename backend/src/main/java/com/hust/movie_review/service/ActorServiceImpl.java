@@ -27,9 +27,9 @@ public class ActorServiceImpl extends BaseService<Actor> implements IActorServic
     @Override
     public Actor insert(StoreRequest request) {
         Actor actor = new Actor();
-        actor.setFullName(request.getFullName());
-        actor.setGender(request.getGender());
-        actor.setYearBirthday(request.getYearBirthday());
+        actor.setFullName(request.getFullName())
+                .setGender(request.getGender())
+                .setYearBirthday(request.getYearBirthday());
 
         Country country = countryRepository.findByCode(request.getCountryCode());
         actor.setCountry(country);
@@ -46,9 +46,9 @@ public class ActorServiceImpl extends BaseService<Actor> implements IActorServic
         }
 
         Actor actor = optional.get();
-        actor.setFullName(request.getFullName());
-        actor.setGender(request.getGender());
-        actor.setYearBirthday(request.getYearBirthday());
+        actor.setFullName(request.getFullName())
+                .setGender(request.getGender())
+                .setYearBirthday(request.getYearBirthday());
 
         Country country = countryRepository.findByCode(request.getCountryCode());
         actor.setCountry(country);

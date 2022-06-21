@@ -9,8 +9,8 @@ import com.hust.movie_review.data.request.LoginRequest;
 import com.hust.movie_review.models.Role;
 import com.hust.movie_review.models.User;
 import com.hust.movie_review.models.UserDetailsImpl;
-import com.hust.movie_review.repositories.RoleRepository;
-import com.hust.movie_review.repositories.UserRepository;
+import com.hust.movie_review.repositories.IRoleRepository;
+import com.hust.movie_review.repositories.IUserRepository;
 import com.hust.movie_review.service.template.IUserService;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.ObjectUtils;
@@ -30,13 +30,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final IUserRepository userRepository;
+    private final IRoleRepository roleRepository;
     private final JwtUtils jwtUtils;
 
     private final PasswordEncoder passwordEncoder;
-    public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository,
+    public UserServiceImpl(IUserRepository userRepository,
+                           IRoleRepository roleRepository,
                            JwtUtils jwtUtils, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;

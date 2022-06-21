@@ -5,7 +5,7 @@ import com.hust.movie_review.data.request.movie.StoreRequest;
 import com.hust.movie_review.models.Country;
 import com.hust.movie_review.models.Movie;
 import com.hust.movie_review.repositories.CountryRepository;
-import com.hust.movie_review.repositories.MovieRepository;
+import com.hust.movie_review.repositories.IMovieRepository;
 import com.hust.movie_review.service.template.IMovieService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class MovieServiceImpl extends BaseService<Movie> implements IMovieService {
-    MovieRepository movieRepository;
+    IMovieRepository movieRepository;
     CountryRepository countryRepository;
 
-    public MovieServiceImpl(MovieRepository movieRepository, CountryRepository countryRepository){
+    public MovieServiceImpl(IMovieRepository movieRepository, CountryRepository countryRepository){
         super(movieRepository);
         this.movieRepository = movieRepository;
         this.countryRepository = countryRepository;
@@ -34,12 +34,6 @@ public class MovieServiceImpl extends BaseService<Movie> implements IMovieServic
     public List<Movie> getTopMovieByType(int top, String type){
         Pageable pageable = new OffsetBasedPageable(0, top, "rating");
         return movieRepository.findMoviesByType(pageable, type).get().collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Movie> getTopMovie(int page, int pageSize, String sortColumn){
-        Pageable pageable = new OffsetBasedPageable(page, pageSize, sortColumn);
-        return this.listing(pageable);
     }
 
     @Override

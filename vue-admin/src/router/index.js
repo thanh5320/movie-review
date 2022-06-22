@@ -93,7 +93,6 @@ export const constantRoutes = [
   {
     path: '/quanlyphim',
     component: Layout,
-    redirect: '/quanlyphim/themphim',
     name: 'Quản lý phim',
     meta: {
       title: 'Quản lý phim',
@@ -103,18 +102,40 @@ export const constantRoutes = [
       {
         path: 'list',
         name: 'Danh sách phim',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/table/movie'),
         meta: { title: 'Danh sách phim', icon: 'table' }
       },
       {
-        path: '/add',
-        component: () => import('@/views/form/index'),
-        name: 'Thêm',
-        meta: { title: 'Thêm', icon: 'form' }
+        path: 'add',
+        component: () => import('@/views/form/movie'),
+        name: 'Thêm phim',
+        meta: { title: 'Thêm phim', icon: 'form' }
       }
     ]
   },
-
+  {
+    path: '/quanlytaikhoan',
+    component: Layout,
+    name: 'Quản lý tài khoản',
+    meta: {
+      title: 'Quản lý tài khoản',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'list',
+        name: 'Danh sách tài khoản',
+        component: () => import('@/views/table/account'),
+        meta: { title: 'Danh sách tài khoản', icon: 'table' }
+      },
+      {
+        path: 'add',
+        component: () => import('@/views/form/account'),
+        name: 'Thêm tài khoản',
+        meta: { title: 'Thêm tài khoản', icon: 'form' }
+      }
+    ]
+  },
   // {
   //   path: 'external-link',
   //   component: Layout,
@@ -138,7 +159,6 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router

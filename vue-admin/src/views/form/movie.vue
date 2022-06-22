@@ -29,12 +29,12 @@
         </el-col>
       </el-form-item>
       <el-form-item label="Thể loại">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="Hành động" name="type" />
-          <el-checkbox label="Hài" name="type" />
-          <el-checkbox label="Lãng mạn" name="type" />
-          <el-checkbox label="Cổ trang" name="type" />
-        </el-checkbox-group>
+        <el-radio-group v-model="form.type">
+          <el-radio label="Hành động" name="type" />
+          <el-radio label="Hài" name="type" />
+          <el-radio label="Lãng mạn" name="type" />
+          <el-radio label="Cổ trang" name="type" />
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="Mô tả">
         <el-input v-model="form.desc" type="textarea" />

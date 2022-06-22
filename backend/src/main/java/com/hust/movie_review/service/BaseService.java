@@ -39,6 +39,10 @@ public abstract class BaseService<T> {
         return this.listing(page, pageSize, sortBy, true);
     }
 
+    public int count(){
+        return (int) repository.count();
+    }
+
     @SneakyThrows
     public boolean delete(int id) {
         Optional<T> optional = repository.findById(id);

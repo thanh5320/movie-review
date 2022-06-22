@@ -4,19 +4,18 @@ import com.hust.movie_review.config.exception.ApiException;
 import com.hust.movie_review.data.request.role.StoreRequest;
 import com.hust.movie_review.data.request.role.UpdateRequest;
 import com.hust.movie_review.models.Role;
-import com.hust.movie_review.repositories.RoleRepository;
+import com.hust.movie_review.repositories.IRoleRepository;
 import com.hust.movie_review.service.template.IRoleService;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class RoleServiceImpl extends BaseService<Role> implements IRoleService {
-    RoleRepository roleRepository;
+    IRoleRepository roleRepository;
 
-    public RoleServiceImpl(RoleRepository roleRepository){
+    public RoleServiceImpl(IRoleRepository roleRepository){
         super(roleRepository);
         this.roleRepository = roleRepository;
     }

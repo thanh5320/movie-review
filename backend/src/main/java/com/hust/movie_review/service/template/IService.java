@@ -13,5 +13,7 @@ public interface IService<T> {
 
     T detail(int id);
 
+    int count();
+
     boolean delete(int id);
 }

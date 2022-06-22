@@ -2,14 +2,14 @@ package com.hust.movie_review.controllers;
 
 import com.hust.movie_review.data.response.DfResponse;
 import com.hust.movie_review.data.request.movie.StoreRequest;
+import com.hust.movie_review.data.response.DfResponseList;
 import com.hust.movie_review.models.Movie;
 import com.hust.movie_review.service.template.IMovieService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("api/movie")
@@ -33,9 +33,40 @@ public class MovieController {
     }
 
     @GetMapping("top/{top}")
-    public DfResponse<List<Movie>> getTop(@PathVariable int top){
-        List<Movie> topMovie = movieService.getTopMovie(top);
+    public DfResponse<List<Movie>> getTop(
+            @RequestParam String type,
+            @PathVariable int top
+    ){
+        List<Movie> topMovie = null;
+        if(Objects.equals(type, "movie")){
+            topMovie = movieService.getTopMovie(top);
+        } else {
+            topMovie = movieService.getTopMovieByType(top, type);
+        }
+
         return DfResponse.okEntity(topMovie);
+    }
+
+    @GetMapping("upcoming")
+    public DfResponseList<Movie> getUpcoming(
+            @RequestParam String type,
+            @RequestParam(name = "page", defaultValue = "1", required = false) int page,
+            @RequestParam(name = "page_size", defaultValue = "10", required = false) int pageSize
+    ){
+        List<Movie> topMovie = movieService.getTopMovieByType(page-1, pageSize, type, "createdAt");
+        int total = movieService.countByType(type);
+        return DfResponseList.okEntity(topMovie, total);
+    }
+
+    @GetMapping("search")
+    public DfResponseList<Movie> search(
+            @RequestParam(name = "page", defaultValue = "1", required = false) int page,
+            @RequestParam(name = "page_size", defaultValue = "10", required = false) int pageSize,
+            @RequestParam String search
+    ){
+        List<Movie> topMovie = movieService.search(page, pageSize, "createdAt", search);
+        int total = movieService.countSearch(search);
+        return DfResponseList.okEntity(topMovie, total);
     }
 
     @PostMapping("store")

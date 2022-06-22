@@ -2,11 +2,23 @@
   <div>
     <h2 class="title">
       <font-awesome-icon 
-        icon="film" 
+        icon="film"
+        size="1x" />&nbsp;
+      <font-awesome-icon
+        icon="tv"
+        transform="shrink-3"
+        size="1x" />&nbsp;
+      Top 10 rated Movies & TV shows
+    </h2>
+    <ItemList :results="resultsMovie" type="movie" @item-clicked="viewDetailInfo" />
+
+    <h2 class="title">
+      <font-awesome-icon
+        icon="film"
         size="1x" />&nbsp;
       Top 10 rated Movies
     </h2>
-    <ItemList :results="resultsMovie" type="movie" @item-clicked="viewDetailInfo" />
+    <ItemList :results="resultsFilm" type="film" @item-clicked="viewDetailInfo" />
 
     <h2 class="title">
       <font-awesome-icon 
@@ -34,6 +46,7 @@ export default {
     return {
       numItems: 10,
       resultsMovie: [],
+      resultsFilm: [],
       resultsTv: [],
       loading: true
     };
@@ -44,10 +57,14 @@ export default {
   methods: {
     async fetchTops() {
       try {
-        const [responseMovie] = await Promise.all([
+        const [responseMovie, responseFilm, responseTv] = await Promise.all([
           AppServices.getTop('movie'),
+          AppServices.getTop('film'),
+          AppServices.getTop('tv')
         ]);
         this.resultsMovie = responseMovie.data.data;
+        this.resultsFilm = responseFilm.data.data;
+        this.resultsTv = responseTv.data.data;
       } catch (e) {
         this.error = e;
       } finally {

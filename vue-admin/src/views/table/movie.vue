@@ -8,7 +8,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="ID" width="35">
+      <el-table-column align="center" label="ID" width="40">
         <template slot-scope="scope">
           {{ scope.$index }}
         </template>

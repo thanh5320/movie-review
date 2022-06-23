@@ -25,14 +25,17 @@ public class Review {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     public User user;
+
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
     @JsonBackReference
     private Movie movie;
+
     @Column(name = "rating", nullable = false)
     private double rating;
 

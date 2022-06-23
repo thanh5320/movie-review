@@ -126,5 +126,16 @@ public class UserServiceImpl implements IUserService {
         return UserDetailsImpl.build(user);
     }
 
+    public User getCurrentUserByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
 
+    public User loadUserById(int id){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            return null;
+        }
+
+        return user.get();
+    }
 }

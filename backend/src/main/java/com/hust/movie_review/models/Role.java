@@ -36,6 +36,7 @@ public class Role {
     private String displayName;
 
     @ManyToMany(mappedBy = "roles")
+    @JsonBackReference
     Set<User> users;
 
     @Column(name = "created_at")

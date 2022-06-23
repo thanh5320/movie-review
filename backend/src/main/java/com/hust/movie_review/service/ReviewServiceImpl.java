@@ -35,13 +35,13 @@ public class ReviewServiceImpl extends BaseService<Review> implements IReviewSer
 
         Optional<Movie> optionalMovie = movieRepository.findById(request.getMovieId());
         if(optionalMovie.isEmpty()){
-            throw new ApiException("Không tìm thấy Movie có id tương ứng");
+            throw new ApiException("Can't find Movie with corresponding id");
         }
         Movie movie = optionalMovie.get();
 
         Optional<User> optionalUser = userRepository.findById(request.getUserId());
         if(optionalUser.isEmpty()){
-            throw new ApiException("Không tìm thấy User có id tương ứng");
+            throw new ApiException("Can't find User with corresponding id");
         }
         User user = optionalUser.get();
 

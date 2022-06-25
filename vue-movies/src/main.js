@@ -9,11 +9,13 @@ import {
   faTv,
   faSearch,
   faTimes,
-  faStar
+  faStar,
+  faWonSign,
+  faRecycle
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faFilm, faTv, faSearch, faTimes, faStar);
+library.add(faFilm, faTv, faSearch, faTimes, faStar, faWonSign, faRecycle);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

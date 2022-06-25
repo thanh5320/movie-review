@@ -7,11 +7,12 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     baseUrl: '',
-    itemInfo: {}
+    itemInfo: {},
+    user: null,
   },
   getters: {
-    imgPath: state => `${state.baseUrl}w370_and_h556_bestv2`
-    //backgroundPath: state => `${state.baseUrl}w1400_and_h450_face`
+    imgPath: state => `${state.baseUrl}w370_and_h556_bestv2`,
+    user: state => state.user
   },
 
   mutations: {
@@ -37,13 +38,19 @@ export default new Vuex.Store({
           .join(', ')
       };
       Vue.set(state, 'itemInfo', itemInfo);
+    },
+    LOAD_USER: (state, { user }) => {
+      state.user = user;
     }
   },
 
   actions: {
     getInitialData: async ({ commit }) => {
-      // const response = await AppServices.getConfiguration();
-      // commit('LOAD_CONF', response.data.images.secure_base_url);
+      const response = await Promise.all([
+        AppServices.getMe()
+      ]);
+
+      commit('LOAD_USER', {user: response.data.data})
     },
 
     getItem: async ({ commit }, { id, type }) => {
@@ -56,6 +63,20 @@ export default new Vuex.Store({
         type,
         info: response.data.data
       });
+    },
+
+    setAuth: async ({ commit }, {id, username, phone_number, email, full_name}) => {
+      const user = {
+        username: username,
+        id: id,
+        phone_number: phone_number,
+        email: email,
+        full_name: full_name
+      };
+
+      commit('LOAD_USER', {
+        user
+      })
     }
   }
 });

@@ -13,34 +13,29 @@
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="Tên phim">
+      <el-table-column label="Tên">
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          {{ scope.row.full_name }}
         </template>
       </el-table-column>
-      <el-table-column label="Đạo diễn" width="140" align="center">
+      <el-table-column label="Quốc gia" width="150" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.director }}</span>
+          <span v-if=" scope.row.country != undefined">{{ scope.row.country.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Quốc gia" width="140" align="center">
+      <el-table-column label="Châu lục" width="150" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.country.name }}</span>
+          <span v-if=" scope.row.country != undefined">{{ scope.row.country.continent }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Thể loại" width="140" align="center">
+      <el-table-column label="Năm sinh" width="150" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.category.name }}</span>
+          <span>{{ scope.row.year_birthday }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Đánh giá" width="85" align="center">
+      <el-table-column label="Giới tính" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.rating }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Năm phát hành" width="150">
-        <template slot-scope="scope">
-          <span>{{ scope.row.release_year }}</span>
+          <span>{{ scope.row.gender }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Actions" align="center" width="200" class-name="small-padding fixed-width">
@@ -54,32 +49,35 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- <el-dialog title="Edit category" :visible.sync="dialogFormVisible">
+    <el-dialog title="Edit actor" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="category" label-position="left" style="width: 400px; margin-left:50px;">
-        <el-form-item label="Name" prop="title">
-          <el-input v-model="category.name" />
+        <el-form-item label="Họ tên" prop="name">
+          <el-input v-model="actor.full_name" />
         </el-form-item>
-        <el-form-item label="Description" prop="description">
-          <el-input v-model="category.description" />
+        <el-form-item label="Quốc gia" prop="country">
+          <el-input v-model="actor.country.name" />
+        </el-form-item>
+        <el-form-item label="Năm sinh" prop="year_birthday">
+          <el-input v-model="actor.year_birthday" />
+        </el-form-item>
+        <el-form-item label="Giới tính" prop="gender">
+          <el-input v-model="actor.gender" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button v-if="!dialogCreate" type="primary" @click="updateCategory(category)">
+        <el-button v-if="!dialogCreate" type="primary" @click="updateActor(category)">
           Update
         </el-button>
-        <el-button v-if="dialogCreate" type="primary" @click="createMovie(category)">
-          Create
-        </el-button>
       </div>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getListMovie } from '@/api/movie'
+import { getListActor, updateActor, deleteActor } from '@/api/actor'
 
 export default {
   filters: {
@@ -95,7 +93,7 @@ export default {
   data() {
     return {
       list: null,
-      movie: null,
+      actor: null,
       listLoading: true,
       dialogFormVisible: false,
       dialogCreate: false
@@ -107,12 +105,12 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getListMovie().then(response => {
+      getListActor().then(response => {
         this.list = response.data
         if (this.list.length > 0) {
-          this.movie = this.list[0]
+          this.actor = this.list[0]
         } else {
-          this.movie = {
+          this.actor = {
             name: '',
             description: ''
           }
@@ -120,31 +118,40 @@ export default {
         this.listLoading = false
       })
     },
-    // createMovie(movie) {
-    //   createCategory(movie).then(
-    //     response => {
-    //       if (response.code === 0) {
-    //         this.$notify({
-    //           message: 'Create success',
-    //           type: 'success'
-    //         })
-    //         this.dialogFormVisible = false
-    //         this.fetchData()
-    //       }
-    //     })
-    // },
+    updateActor(actor) {
+      console.log(actor)
+      updateActor(actor).then(
+        response => {
+          if (response.code === 200) {
+            this.$notify({
+              message: 'Update success',
+              type: 'success'
+            })
+            this.dialogFormVisible = false
+          }
+        }
+      )
+    },
+    handleDelete(index) {
+      deleteActor(
+        this.list[index].id
+      ).then(
+        response => {
+          if (response.code === 200) {
+            this.$notify({
+              message: 'Update success',
+              type: 'success'
+            })
+            this.fetchData()
+          }
+        }
+      )
+    },
+
     handleUpdate(index) {
-      this.movie = this.list[index]
+      this.actor = this.list[index]
       this.dialogFormVisible = true
       this.dialogCreate = false
-    },
-    handleCreate() {
-      this.movie = {
-        name: null,
-        description: null
-      }
-      this.dialogFormVisible = true
-      this.dialogCreate = true
     }
   }
 }

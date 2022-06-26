@@ -110,7 +110,32 @@ export const constantRoutes = [
         component: () => import('@/views/form/movie'),
         name: 'Thêm phim',
         meta: { title: 'Thêm phim', icon: 'form' }
+      },
+      {
+        path: 'list_category',
+        name: 'Danh sách thể loại',
+        component: () => import('@/views/table/category'),
+        meta: { title: 'Danh sách thể loại', icon: 'table' }
+      },
+      {
+        path: 'add_category',
+        component: () => import('@/views/form/category'),
+        name: 'Thêm thể loại',
+        meta: { title: 'Thêm thể loại', icon: 'form' }
+      },
+      {
+        path: 'list_actor',
+        name: 'Danh sách diễn viên',
+        component: () => import('@/views/table/actor'),
+        meta: { title: 'Danh sách diễn viên', icon: 'table' }
+      },
+      {
+        path: 'add_actor',
+        component: () => import('@/views/form/actor'),
+        name: 'Thêm diễn viên',
+        meta: { title: 'Thêm diễn viên', icon: 'form' }
       }
+
     ]
   },
   {

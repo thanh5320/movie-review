@@ -40,15 +40,12 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
-
 export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
+        active: 'success',
+        locked: 'danger'
       }
       return statusMap[status]
     }
@@ -56,20 +53,12 @@ export default {
   data() {
     return {
       list: null,
+      user: null,
       listLoading: true
     }
   },
   created() {
     this.fetchData()
-  },
-  methods: {
-    fetchData() {
-      this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
-        this.listLoading = false
-      })
-    }
   }
 }
 </script>

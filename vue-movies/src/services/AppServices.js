@@ -1,7 +1,6 @@
 import { API, key } from '@/services/api';
 
 const language = 'en-US';
-const include_adult = 'false';
 
 export default {
   getConfiguration() {
@@ -33,7 +32,7 @@ export default {
   },
   getTvShowsOnAir(page){
     const url = `movie/upcoming?type=tv&page=1&page_size=${page}`;
-    return API.get(url);    
+    return API.get(url);
   }
 
 };

@@ -25,11 +25,15 @@ public class Country {
     @Id
     @Column(name = "code", nullable = false)
     private String code;
+
     @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "continent", nullable = false)
     private String continent;
+
     @OneToMany(mappedBy="country", fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<Actor> actors;
 
     @Column(name = "created_at")

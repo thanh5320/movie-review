@@ -30,12 +30,10 @@ public class Movie {
 
     @ManyToOne
     @JoinColumn(name="category_id", nullable = false)
-    @JsonBackReference
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "country_code", nullable = false)
-    @JsonBackReference
     private Country country;
 
     @Column(name = "director")
@@ -77,10 +75,8 @@ public class Movie {
     Set<Actor> actors;
 
     @OneToMany(mappedBy="user")
-    @JsonBackReference
     private Set<Comment> comments;
 
     @OneToMany(mappedBy="user")
-    @JsonBackReference
     private Set<Review> reviews;
 }

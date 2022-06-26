@@ -13,6 +13,7 @@ public class UserInfoResponse {
     private String username;
     private String fulName;
     private String email;
+    private String phoneNumber;
     @JsonIgnore
     private String password;
     private Set<String> roles;

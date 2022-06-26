@@ -4,8 +4,10 @@ import com.hust.movie_review.data.response.DfResponse;
 import com.hust.movie_review.models.User;
 import com.hust.movie_review.service.template.IUserService;
 import com.hust.movie_review.utils.AuthenticationUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

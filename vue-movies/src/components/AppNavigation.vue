@@ -8,6 +8,26 @@
           <span>{{ link.text }}</span>
         </router-link>
       </li>
+      <li v-if="!user">
+        <router-link to="/login">
+          <font-awesome-icon icon="recycle" transform="shrink-5" size="2x" class="icon" />
+          <br />
+          <span>Login</span>
+        </router-link>
+      </li>
+      <li v-if="user">
+        <router-link to="/user">
+          <font-awesome-icon icon="recycle" transform="shrink-5" size="2x" class="icon" />
+          <br />
+          <span>User</span>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/register">
+          <font-awesome-icon icon="won-sign" transform="shrink-5" size="2x" class="icon" />
+          <span>Register</span>
+        </router-link>
+      </li>
       <li>
         <AppSearch />
       </li>
@@ -17,6 +37,7 @@
 
 <script>
 import AppSearch from '@/components/AppSearch';
+import {mapGetters} from "vuex";
 
 export default {
   name: 'AppNavigation',
@@ -44,6 +65,9 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    ...mapGetters(['user'])
   }
 };
 </script>

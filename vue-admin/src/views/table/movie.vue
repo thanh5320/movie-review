@@ -25,12 +25,12 @@
       </el-table-column>
       <el-table-column label="Quốc gia" width="140" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.country.name }}</span>
+          <span v-if=" scope.row.country != undefined">{{ scope.row.country.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Thể loại" width="140" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.category.name }}</span>
+          <span v-if=" scope.row.category != undefined">{{ scope.row.category.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Đánh giá" width="85" align="center">

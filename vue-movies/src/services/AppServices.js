@@ -1,11 +1,15 @@
 import { API, key } from '@/services/api';
 
 const language = 'en-US';
-const include_adult = 'false';
 
 export default {
-  getConfiguration() {
-    return API.get(`configuration?api_key=${key}`);
+  login(username, password){
+    const url = 'auth/login';
+    return API.post(url, {username: username, password: password})
+  },
+  getMe(){
+    const url = `user/me`;
+    return API.get(url);
   },
   search(query, page) {
     const url = `movie/search?search=${query}&page=${page}`;
@@ -33,7 +37,7 @@ export default {
   },
   getTvShowsOnAir(page){
     const url = `movie/upcoming?type=tv&page=1&page_size=${page}`;
-    return API.get(url);    
+    return API.get(url);
   }
 
 };

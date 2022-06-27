@@ -75,10 +75,8 @@ public class Movie {
     Set<Actor> actors;
 
     @OneToMany(mappedBy="user")
-    @JsonBackReference
     private Set<Comment> comments;
 
     @OneToMany(mappedBy="user")
-    @JsonBackReference
     private Set<Review> reviews;
 }

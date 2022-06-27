@@ -1,14 +1,18 @@
 package com.hust.movie_review.service;
 
+import com.hust.movie_review.config.exception.ApiException;
 import com.hust.movie_review.config.exception.InValidException;
 import com.hust.movie_review.config.security.JwtUtils;
 import com.hust.movie_review.data.request.user.CreateUserRequest;
+import com.hust.movie_review.data.request.user.UpdateUserRequest;
 import com.hust.movie_review.data.response.user.LoginResponse;
 import com.hust.movie_review.data.response.user.UserInfoResponse;
 import com.hust.movie_review.data.request.LoginRequest;
 import com.hust.movie_review.models.Role;
 import com.hust.movie_review.models.User;
 import com.hust.movie_review.models.UserDetailsImpl;
+import com.hust.movie_review.repositories.ICommentRepository;
+import com.hust.movie_review.repositories.IReviewRepository;
 import com.hust.movie_review.repositories.IRoleRepository;
 import com.hust.movie_review.repositories.IUserRepository;
 import com.hust.movie_review.service.template.IUserService;
@@ -35,13 +39,22 @@ public class UserServiceImpl implements IUserService {
     private final JwtUtils jwtUtils;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final ICommentRepository commentRepository;
+
+    private final IReviewRepository reviewRepository;
     public UserServiceImpl(IUserRepository userRepository,
                            IRoleRepository roleRepository,
-                           JwtUtils jwtUtils, PasswordEncoder passwordEncoder) {
+                           JwtUtils jwtUtils,
+                           PasswordEncoder passwordEncoder,
+                           ICommentRepository commentRepository,
+                           IReviewRepository reviewRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.jwtUtils = jwtUtils;
         this.passwordEncoder = passwordEncoder;
+        this.commentRepository = commentRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     @SneakyThrows
@@ -71,6 +84,7 @@ public class UserServiceImpl implements IUserService {
 
         // set response
         UserInfoResponse response = new UserInfoResponse();
+        response.setId(userEntity.getId());
         response.setEmail(userEntity.getEmail());
         response.setUsername(userEntity.getUsername());
         response.setFulName(userEntity.getFullName());
@@ -128,6 +142,74 @@ public class UserServiceImpl implements IUserService {
 
     public User getCurrentUserByUsername(String username){
         return userRepository.findByUsername(username);
+    }
+
+    @SneakyThrows
+    @Override
+    public UserInfoResponse updateUser(UpdateUserRequest request) {
+        Optional<User> userOptional = userRepository.findById(request.getId());
+        if (!userOptional.isPresent()) {
+            throw new ApiException("user is not exist!");
+        }
+        User  user = userOptional.get();
+
+        if(ObjectUtils.isNotEmpty(request.getUsername())){
+            User userByUserName = userRepository.findByUsername(request.getUsername());
+            if (ObjectUtils.isNotEmpty(userByUserName)) throw new ApiException("username already exists");
+            user.setUsername(request.getUsername());
+        }
+
+        if(ObjectUtils.isNotEmpty(request.getPassword()))
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        if(ObjectUtils.isNotEmpty(request.getEmail())){
+            User userByEmail = userRepository.findByEmail(request.getEmail());
+            if (ObjectUtils.isNotEmpty(userByEmail)) throw new ApiException("email already exists");
+            user.setEmail(request.getEmail());
+        }
+
+        if(ObjectUtils.isNotEmpty(request.getFullName()))
+            user.setFullName(request.getFullName());
+
+        if(ObjectUtils.isNotEmpty(request.getPhoneNumber()))
+            user.setPhoneNumber(request.getPhoneNumber());
+
+        userRepository.save(user);
+
+        // set response
+        UserInfoResponse response = new UserInfoResponse();
+        response.setId(user.getId());
+        response.setEmail(user.getEmail());
+        response.setUsername(user.getUsername());
+        response.setFulName(user.getFullName());
+        response.setStatus(true);
+        response.setRoles(
+                Optional.ofNullable(user.getRoles()).orElse(new HashSet<>())
+                        .stream()
+                        .map(Role::getName)
+                        .collect(Collectors.toSet())
+        );
+        response.setPhoneNumber(user.getPhoneNumber());
+
+        return response;
+    }
+
+    @SneakyThrows
+    @Override
+    public String deleteUser(int id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if(!userOptional.isPresent()) throw new ApiException("user is not exist");
+        User user = userOptional.get();
+        Optional.ofNullable(user.getComments()).orElse(new HashSet<>())
+                        .forEach(item->{
+                            commentRepository.delete(item);
+                        });
+        Optional.ofNullable(user.getReviews()).orElse(new HashSet<>())
+                .forEach(item->{
+                    reviewRepository.delete(item);
+                });
+        userRepository.delete(userOptional.get());
+        return "success";
     }
 
     public User loadUserById(int id){

@@ -4,6 +4,9 @@ import TopsView from "@/views/TopsView";
 import SearchView from "@/views/SearchView";
 import MoviesView from "@/views/MoviesView";
 import TvShowsView from "@/views/TvShowsView";
+import LoginView from "@/views/LoginView";
+import RegisterView from "@/views/RegisterView";
+import UserView from "@/views/UserView";
 
 Vue.use(Router);
 
@@ -34,6 +37,21 @@ export default new Router({
       path: "/tv-shows",
       name: "tv-shows",
       component: TvShowsView
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: LoginView
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: RegisterView
+    },
+    {
+      path: "/user",
+      name: "user",
+      component: UserView
     },
     {
       path: "/*",

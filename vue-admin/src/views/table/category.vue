@@ -13,34 +13,14 @@
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="Tên phim">
+      <el-table-column label="Tên thể loại" width="150">
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="Đạo diễn" width="140" align="center">
+      <el-table-column label="Mô tả" width="300">
         <template slot-scope="scope">
-          <span>{{ scope.row.director }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Quốc gia" width="140" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.country.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Thể loại" width="140" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.category.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Đánh giá" width="85" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.rating }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Năm phát hành" width="150">
-        <template slot-scope="scope">
-          <span>{{ scope.row.release_year }}</span>
+          <span>{{ scope.row.description }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Actions" align="center" width="200" class-name="small-padding fixed-width">
@@ -54,12 +34,12 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- <el-dialog title="Edit category" :visible.sync="dialogFormVisible">
+    <el-dialog title="Edit category" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="category" label-position="left" style="width: 400px; margin-left:50px;">
-        <el-form-item label="Name" prop="title">
+        <el-form-item label="Tên thể loại" prop="title">
           <el-input v-model="category.name" />
         </el-form-item>
-        <el-form-item label="Description" prop="description">
+        <el-form-item label="Mô tả" prop="description">
           <el-input v-model="category.description" />
         </el-form-item>
       </el-form>
@@ -70,16 +50,13 @@
         <el-button v-if="!dialogCreate" type="primary" @click="updateCategory(category)">
           Update
         </el-button>
-        <el-button v-if="dialogCreate" type="primary" @click="createMovie(category)">
-          Create
-        </el-button>
       </div>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getListMovie } from '@/api/movie'
+import { getListCategory, updateCategory, deleteCategory } from '@/api/category'
 
 export default {
   filters: {
@@ -95,7 +72,7 @@ export default {
   data() {
     return {
       list: null,
-      movie: null,
+      category: null,
       listLoading: true,
       dialogFormVisible: false,
       dialogCreate: false
@@ -107,12 +84,12 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getListMovie().then(response => {
+      getListCategory().then(response => {
         this.list = response.data
         if (this.list.length > 0) {
-          this.movie = this.list[0]
+          this.category = this.list[0]
         } else {
-          this.movie = {
+          this.category = {
             name: '',
             description: ''
           }
@@ -120,31 +97,38 @@ export default {
         this.listLoading = false
       })
     },
-    // createMovie(movie) {
-    //   createCategory(movie).then(
-    //     response => {
-    //       if (response.code === 0) {
-    //         this.$notify({
-    //           message: 'Create success',
-    //           type: 'success'
-    //         })
-    //         this.dialogFormVisible = false
-    //         this.fetchData()
-    //       }
-    //     })
-    // },
+    updateCategory(category) {
+      updateCategory(category).then(
+        response => {
+          if (response.code === 200) {
+            this.$notify({
+              message: 'Update success',
+              type: 'success'
+            })
+            this.dialogFormVisible = false
+          }
+        }
+      )
+    },
+    handleDelete(index) {
+      deleteCategory(
+        this.list[index].id
+      ).then(
+        response => {
+          if (response.code === 200) {
+            this.$notify({
+              message: 'Update success',
+              type: 'success'
+            })
+            this.fetchData()
+          }
+        }
+      )
+    },
     handleUpdate(index) {
-      this.movie = this.list[index]
+      this.category = this.list[index]
       this.dialogFormVisible = true
       this.dialogCreate = false
-    },
-    handleCreate() {
-      this.movie = {
-        name: null,
-        description: null
-      }
-      this.dialogFormVisible = true
-      this.dialogCreate = true
     }
   }
 }

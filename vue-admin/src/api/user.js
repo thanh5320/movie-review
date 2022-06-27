@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: '/auth/login',
     method: 'post',
     data
   })
@@ -10,15 +10,17 @@ export function login(data) {
 
 export function getInfo(token) {
   return request({
-    url: '/vue-admin-template/user/info',
+    url: '/user/me',
     method: 'get',
-    params: { token }
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   })
 }
 
 export function logout() {
   return request({
-    url: '/vue-admin-template/user/logout',
+    url: '/auth/logout',
     method: 'post'
   })
 }

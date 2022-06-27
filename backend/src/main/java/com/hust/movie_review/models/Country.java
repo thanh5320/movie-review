@@ -30,6 +30,7 @@ public class Country {
     @Column(name = "continent", nullable = false)
     private String continent;
     @OneToMany(mappedBy="country", fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<Actor> actors;
 
     @Column(name = "created_at")

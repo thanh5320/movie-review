@@ -30,12 +30,10 @@ public class Movie {
 
     @ManyToOne
     @JoinColumn(name="category_id", nullable = false)
-    @JsonBackReference
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "country_code", nullable = false)
-    @JsonBackReference
     private Country country;
 
     @Column(name = "director")

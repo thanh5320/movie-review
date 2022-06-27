@@ -34,6 +34,7 @@ public class ActorController {
         return DfResponse.okEntity(actorService.insert(request));
     }
 
+
     @PostMapping("update")
     public DfResponse<Actor> update(@RequestBody @Valid UpdateRequest request){
         return DfResponse.okEntity(actorService.update(request));

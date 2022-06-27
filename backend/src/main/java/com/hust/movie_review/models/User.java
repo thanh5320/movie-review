@@ -16,6 +16,7 @@ import java.util.Set;
 @Setter
 @Accessors(chain = true)
 @Table(name = "users")
+
 @Entity
 @ToString(exclude ={"comments", "reviews", "roles"})
 @EqualsAndHashCode(exclude = {"comments", "reviews", "roles"})

@@ -33,7 +33,6 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
-    @JsonBackReference
     private Movie movie;
 
     @Column(name = "comment", nullable = false)

@@ -13,29 +13,14 @@
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="Họ và tên" width="220">
+      <el-table-column label="Tên thể loại" width="150">
         <template slot-scope="scope">
-          {{ scope.row.full_name }}
+          {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="Số điện thoại" width="130" align="center">
+      <el-table-column label="Mô tả" width="300">
         <template slot-scope="scope">
-          <span>{{ scope.row.phone_number }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Email" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Username" width="150" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.username }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Password" width="150" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.password }}</span>
+          <span>{{ scope.row.description }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Actions" align="center" width="200" class-name="small-padding fixed-width">
@@ -49,17 +34,37 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog title="Edit category" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :model="category" label-position="left" style="width: 400px; margin-left:50px;">
+        <el-form-item label="Tên thể loại" prop="title">
+          <el-input v-model="category.name" />
+        </el-form-item>
+        <el-form-item label="Mô tả" prop="description">
+          <el-input v-model="category.description" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          Cancel
+        </el-button>
+        <el-button v-if="!dialogCreate" type="primary" @click="updateCategory(category)">
+          Update
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
+
 <script>
-import { getInfo, updateUser, deleteUser } from '@/api/user'
+import { getListCategory, updateCategory, deleteCategory } from '@/api/category'
 
 export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        active: 'success',
-        locked: 'danger'
+        published: 'success',
+        draft: 'gray',
+        deleted: 'danger'
       }
       return statusMap[status]
     }
@@ -67,7 +72,7 @@ export default {
   data() {
     return {
       list: null,
-      user: null,
+      category: null,
       listLoading: true,
       dialogFormVisible: false,
       dialogCreate: false
@@ -79,12 +84,12 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getInfo().then(response => {
+      getListCategory().then(response => {
         this.list = response.data
         if (this.list.length > 0) {
-          this.user = this.list[0]
+          this.category = this.list[0]
         } else {
-          this.user = {
+          this.category = {
             name: '',
             description: ''
           }
@@ -92,8 +97,8 @@ export default {
         this.listLoading = false
       })
     },
-    updateUser(user) {
-      updateUser(user).then(
+    updateCategory(category) {
+      updateCategory(category).then(
         response => {
           if (response.code === 200) {
             this.$notify({
@@ -106,7 +111,7 @@ export default {
       )
     },
     handleDelete(index) {
-      deleteUser(
+      deleteCategory(
         this.list[index].id
       ).then(
         response => {
@@ -120,9 +125,8 @@ export default {
         }
       )
     },
-
     handleUpdate(index) {
-      this.user = this.list[index]
+      this.category = this.list[index]
       this.dialogFormVisible = true
       this.dialogCreate = false
     }

@@ -2,23 +2,41 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: '/auth/login',
     method: 'post',
     data
   })
 }
 
-export function getInfo(token) {
+export function getInfo() {
   return request({
-    url: '/vue-admin-template/user/info',
-    method: 'get',
-    params: { token }
+    url: '/user/me',
+    method: 'get'
   })
 }
-
+export function updateUser(params) {
+  return request({
+    url: '/admin/user/update',
+    method: 'post',
+    data: params
+  })
+}
+export function deleteUser(id) {
+  return request({
+    url: `/admin/user/delete/${id}`,
+    method: 'post'
+  })
+}
+export function createUser(params) {
+  return request({
+    url: '/admin/user/create',
+    method: 'post',
+    data: params
+  })
+}
 export function logout() {
   return request({
-    url: '/vue-admin-template/user/logout',
+    url: '/auth/logout',
     method: 'post'
   })
 }

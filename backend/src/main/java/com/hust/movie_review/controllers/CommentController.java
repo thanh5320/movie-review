@@ -1,8 +1,9 @@
 package com.hust.movie_review.controllers;
 
+import com.hust.movie_review.data.mapper.CommentMapper;
 import com.hust.movie_review.data.request.comment.StoreRequest;
+import com.hust.movie_review.data.response.CommentResponse;
 import com.hust.movie_review.data.response.DfResponse;
-import com.hust.movie_review.models.Comment;
 import com.hust.movie_review.service.template.ICommentService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class CommentController {
     }
 
     @PostMapping("store")
-    public DfResponse<Comment> store(@RequestBody @Valid StoreRequest request){
-        return DfResponse.okEntity(commentService.insert(request));
+    public DfResponse<CommentResponse> store(@RequestBody @Valid StoreRequest request){
+        return DfResponse.okEntity(CommentMapper.toCommentResponse(commentService.insert(request)));
     }
 }

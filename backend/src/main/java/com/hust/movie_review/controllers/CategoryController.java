@@ -1,9 +1,10 @@
 package com.hust.movie_review.controllers;
 
-import com.hust.movie_review.data.response.DfResponse;
+import com.hust.movie_review.data.mapper.CategoryMapper;
 import com.hust.movie_review.data.request.category.StoreRequest;
 import com.hust.movie_review.data.request.category.UpdateRequest;
-import com.hust.movie_review.models.Category;
+import com.hust.movie_review.data.response.CategoryResponse;
+import com.hust.movie_review.data.response.DfResponse;
 import com.hust.movie_review.service.template.ICategoryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,23 +21,23 @@ public class CategoryController {
     }
 
     @GetMapping("listing")
-    public DfResponse<List<Category>> listing(){
-        return DfResponse.okEntity(categoryService.listing());
+    public DfResponse<List<CategoryResponse>> listing(){
+        return DfResponse.okEntity(CategoryMapper.toCategoryResponses(categoryService.listing()));
     }
 
     @GetMapping("detail/{id}")
-    public DfResponse<Category> detail(@PathVariable int id){
-        return DfResponse.okEntity(categoryService.detail(id));
+    public DfResponse<CategoryResponse> detail(@PathVariable int id){
+        return DfResponse.okEntity(CategoryMapper.toCategoryResponse(categoryService.detail(id)));
     }
 
     @PostMapping("store")
-    public DfResponse<Category> store(@RequestBody @Valid StoreRequest request){
-        return DfResponse.okEntity(categoryService.insert(request));
+    public DfResponse<CategoryResponse> store(@RequestBody @Valid StoreRequest request){
+        return DfResponse.okEntity(CategoryMapper.toCategoryResponse(categoryService.insert(request)));
     }
 
     @PostMapping("update")
-    public DfResponse<Category> update(@RequestBody @Valid UpdateRequest request){
-        return DfResponse.okEntity(categoryService.update(request));
+    public DfResponse<CategoryResponse> update(@RequestBody @Valid UpdateRequest request){
+        return DfResponse.okEntity(CategoryMapper.toCategoryResponse(categoryService.update(request)));
     }
 
     @PostMapping("delete/{id}")

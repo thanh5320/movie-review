@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 import static com.hust.movie_review.data.mapper.UserMapper.toUserResponse;
 
 @Service
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl extends BaseService<User> implements IUserService {
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
     private final JwtUtils jwtUtils;
@@ -52,6 +52,7 @@ public class UserServiceImpl implements IUserService {
                            PasswordEncoder passwordEncoder,
                            ICommentRepository commentRepository,
                            IReviewRepository reviewRepository) {
+        super(userRepository);
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.jwtUtils = jwtUtils;
@@ -143,8 +144,8 @@ public class UserServiceImpl implements IUserService {
         return UserDetailsImpl.build(user);
     }
 
-    public UserResponse getCurrentUserByUsername(String username){
-        return toUserResponse(userRepository.findByUsername(username));
+    public User getCurrentUserByUsername(String username){
+        return userRepository.findByUsername(username);
     }
 
     @SneakyThrows

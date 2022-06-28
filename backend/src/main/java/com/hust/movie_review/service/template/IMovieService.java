@@ -9,7 +9,7 @@ import java.util.List;
 public interface IMovieService extends  IService<Movie>{
     List<Movie> getTopMovie(int top);
     List<Movie> getTopMovieByType(int top, String type);
-    List<MovieResponse> getTopMovieByType(int page, int pageSize, String type, String sortColumn);
+    List<Movie> getTopMovieByType(int page, int pageSize, String type, String sortColumn);
     int countByType(String type);
     Movie insert(StoreRequest movie);
     List<Movie> search(int page, int pageSize, String sortColumn, String search);

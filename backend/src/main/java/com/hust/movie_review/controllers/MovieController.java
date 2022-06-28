@@ -35,7 +35,7 @@ public class MovieController {
     }
 
     @GetMapping("top/{top}")
-    public DfResponse<List<Movie>> getTop(
+    public DfResponse<List<MovieResponse>> getTop(
             @RequestParam String type,
             @PathVariable int top
     ){
@@ -46,7 +46,7 @@ public class MovieController {
             topMovie = movieService.getTopMovieByType(top, type);
         }
 
-        return DfResponse.okEntity(topMovie);
+        return DfResponse.okEntity(MovieMapper.toMovieResponses(topMovie));
     }
 
     @GetMapping("upcoming")
@@ -55,25 +55,25 @@ public class MovieController {
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "page_size", defaultValue = "10", required = false) int pageSize
     ){
-        List<MovieResponse> topMovie = movieService.getTopMovieByType(page-1, pageSize, type, "createdAt");
+        List<Movie> topMovie = movieService.getTopMovieByType(page-1, pageSize, type, "createdAt");
         int total = movieService.countByType(type);
-        return DfResponseList.okEntity(topMovie, total);
+        return DfResponseList.okEntity(MovieMapper.toMovieResponses(topMovie), total);
     }
 
     @GetMapping("search")
-    public DfResponseList<Movie> search(
+    public DfResponseList<MovieResponse> search(
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "page_size", defaultValue = "10", required = false) int pageSize,
             @RequestParam String search
     ){
         List<Movie> topMovie = movieService.search(page, pageSize, "createdAt", search);
         int total = movieService.countSearch(search);
-        return DfResponseList.okEntity(topMovie, total);
+        return DfResponseList.okEntity(MovieMapper.toMovieResponses(topMovie), total);
     }
 
     @PostMapping("store")
-    public DfResponse<Movie> store(@RequestBody @Valid StoreRequest request){
-        this.movieService.insert(request);
-        return DfResponse.okEntity();
+    public DfResponse<MovieResponse> store(@RequestBody @Valid StoreRequest request){
+        Movie movie = this.movieService.insert(request);
+        return DfResponse.okEntity(MovieMapper.toMovieResponse(movie));
     }
 }

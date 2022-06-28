@@ -39,9 +39,9 @@ public class MovieServiceImpl extends BaseService<Movie> implements IMovieServic
     }
 
     @Override
-    public List<MovieResponse> getTopMovieByType(int page, int pageSize, String type, String sortColumn){
+    public List<Movie> getTopMovieByType(int page, int pageSize, String type, String sortColumn){
         Pageable pageable = new OffsetBasedPageable(page, pageSize, sortColumn);
-        return MovieMapper.toMovieResponses(movieRepository.findMoviesByType(pageable, type).get().collect(Collectors.toList()));
+        return movieRepository.findMoviesByType(pageable, type).get().collect(Collectors.toList());
     }
 
     @Override

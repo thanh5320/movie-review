@@ -1,9 +1,10 @@
 package com.hust.movie_review.controllers;
 
+import com.hust.movie_review.data.mapper.ActorMapper;
 import com.hust.movie_review.data.request.actor.StoreRequest;
 import com.hust.movie_review.data.request.actor.UpdateRequest;
+import com.hust.movie_review.data.response.ActorResponse;
 import com.hust.movie_review.data.response.DfResponse;
-import com.hust.movie_review.models.Actor;
 import com.hust.movie_review.service.template.IActorService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,24 +21,24 @@ public class ActorController {
     }
 
     @GetMapping("listing")
-    public DfResponse<List<Actor>> listing(){
-        return DfResponse.okEntity(actorService.listing());
+    public DfResponse<List<ActorResponse>> listing(){
+        return DfResponse.okEntity(ActorMapper.toActorResponses(actorService.listing()));
     }
 
     @GetMapping("detail/{id}")
-    public DfResponse<Actor> detail(@PathVariable int id){
-        return DfResponse.okEntity(actorService.detail(id));
+    public DfResponse<ActorResponse> detail(@PathVariable int id){
+        return DfResponse.okEntity(ActorMapper.toActorResponse(actorService.detail(id)));
     }
 
     @PostMapping("store")
-    public DfResponse<Actor> store(@RequestBody @Valid StoreRequest request){
-        return DfResponse.okEntity(actorService.insert(request));
+    public DfResponse<ActorResponse> store(@RequestBody @Valid StoreRequest request){
+        return DfResponse.okEntity(ActorMapper.toActorResponse(actorService.insert(request)));
     }
 
 
     @PostMapping("update")
-    public DfResponse<Actor> update(@RequestBody @Valid UpdateRequest request){
-        return DfResponse.okEntity(actorService.update(request));
+    public DfResponse<ActorResponse> update(@RequestBody @Valid UpdateRequest request){
+        return DfResponse.okEntity(ActorMapper.toActorResponse(actorService.update(request)));
     }
 
     @PostMapping("delete/{id}")

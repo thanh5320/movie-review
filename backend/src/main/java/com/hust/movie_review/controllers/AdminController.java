@@ -1,8 +1,10 @@
 package com.hust.movie_review.controllers;
 
+import com.hust.movie_review.data.mapper.UserMapper;
 import com.hust.movie_review.data.request.user.UpdateUserRequest;
 import com.hust.movie_review.data.response.DfResponse;
 import com.hust.movie_review.data.request.user.CreateUserRequest;
+import com.hust.movie_review.data.response.UserResponse;
 import com.hust.movie_review.data.response.user.UserInfoResponse;
 import com.hust.movie_review.models.Category;
 import com.hust.movie_review.service.template.IUserService;
@@ -21,8 +23,8 @@ public class AdminController {
     }
 
     @GetMapping("listing")
-    public DfResponse<List<Category>> listing(){
-        return DfResponse.okEntity(null);
+    public DfResponse<List<UserResponse>> listing(){
+        return DfResponse.okEntity(UserMapper.toUserResponses(userService.listing()));
     }
 
     @PostMapping("create")

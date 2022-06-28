@@ -6,9 +6,9 @@
           <img :src="urlImg" />
         </figure>
         <span class="icon-container" v-show="showIcon">
-          <font-awesome-icon 
-            :icon="icon" 
-            size="1x" 
+          <font-awesome-icon
+            :icon="icon"
+            size="1x"
             class="icon" />
         </span>
         <span class="card-title">{{ title }}</span>
@@ -37,7 +37,7 @@ export default {
       return this.type == 'multi' ? this.item.media_type : this.type;
     },
     title() {
-      return this.mediaType == 'movie' ? this.item.title : this.item.name;
+      return this.item.title;
     },
     showIcon(){
       return this.type == 'multi' ? true : false;
@@ -55,7 +55,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 figure {
   margin: 0 0 10px;
@@ -73,7 +72,7 @@ span {
   font-size: .9em;
 
   &.icon-container{
-    float:left; 
+    float:left;
     margin-right: 5px;
     padding-bottom:5px;
   }

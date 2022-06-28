@@ -8,7 +8,7 @@
             <figure>
               <img :src="urlImg" />
             </figure>
-            <ScoreIndicator 
+            <ScoreIndicator
               :score="itemInfo.rating"
               size="82"
               stroke-width="5"
@@ -23,9 +23,9 @@
             <p>{{ itemInfo.trailer}}</p>
 
             <h2 class="label">
-              <font-awesome-icon 
-                :icon="icon" 
-                size="1x" 
+              <font-awesome-icon
+                :icon="icon"
+                size="1x"
                 class="icon" />&nbsp;
                 {{ dateLabel }}</h2>
             <p>{{ this.date }}</p>
@@ -47,6 +47,22 @@
       <button title="Close" class="close_modal" @click="closeModal">
         <font-awesome-icon icon="times" transform="shrink-6" size="1x" />
       </button>
+      <!-- comment box -->
+      <div class="comment-box">
+        <h5>Total comment ({{itemInfo.comments.length}})</h5>
+        <div v-for="(comment,id) in itemInfo.comments" :key="id" class="comment-line" style="border: 2px solid; padding: 10px">
+          <div class="comment-line-container">
+            <div class="d-flex flex-column ml-3">
+              <div class="d-flex flex-row post-title">
+                <h5>{{comment.comment}}</h5><span class="ml-2">(Jesshead)</span>
+              </div>
+              <div>
+                <span class="mr-2 dot"></span><span> {{toHumanTime(comment.created_at)}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -55,6 +71,7 @@
 import ScoreIndicator from '@/components/ScoreIndicator';
 import { mapState, mapGetters } from 'vuex';
 import dayjs from 'dayjs'
+import {toHumanTime} from "@/helpers";
 
 export default {
   name: 'Modal',
@@ -83,6 +100,9 @@ export default {
   methods: {
     closeModal() {
       this.$emit('close-modal');
+    },
+    toHumanTime(timestamp){
+      return toHumanTime(timestamp);
     }
   }
 };
@@ -238,7 +258,22 @@ a {
   .info{
     display: block;
     padding-left: 2em;
-    margin-left: 33%;    
+    margin-left: 33%;
   }
+}
+
+.comments {
+  text-decoration: underline;
+  text-underline-position: under;
+  cursor: pointer;
+}
+
+.dot {
+  height: 7px;
+  width: 7px;
+  margin-top: 3px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
 }
 </style>

@@ -34,17 +34,7 @@ export default {
       showModal: false
     };
   },
-  created() {
-    this.loadInitialData();
-  },
   methods: {
-    loadInitialData() {
-      try {
-        this.$store.dispatch('getInitialData');
-      } catch (e) {
-        this.error = 'Error: configuration not loaded';
-      }
-    },
     toggleModal() {
       this.showModal = !this.showModal;
     }

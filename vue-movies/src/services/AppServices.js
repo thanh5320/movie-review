@@ -1,4 +1,5 @@
 import { API, key } from '@/services/api';
+import {getToken} from "@/services/jwt";
 
 const language = 'en-US';
 
@@ -7,9 +8,13 @@ export default {
     const url = 'auth/login';
     return API.post(url, {username: username, password: password})
   },
-  getMe(){
+  getMe(token){
     const url = `user/me`;
-    return API.get(url);
+    return API.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   },
   search(query, page) {
     const url = `movie/search?search=${query}&page=${page}`;

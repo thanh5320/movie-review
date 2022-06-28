@@ -7,51 +7,55 @@ import TvShowsView from "@/views/TvShowsView";
 import LoginView from "@/views/LoginView";
 import RegisterView from "@/views/RegisterView";
 import UserView from "@/views/UserView";
+import store from '@/store';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   //mode: 'history',
   base: process.env.NODE_ENV === "development" ? "/" : "/vue-movies/",
   routes: [
     {
       path: "/",
-      redirect: { name: "tops" }
+      redirect: { name: "tops" },
     },
     {
       path: "/tops",
       name: "tops",
-      component: TopsView
+      component: TopsView,
     },
     {
       path: "/search",
       name: "search",
-      component: SearchView
+      component: SearchView,
     },
     {
       path: "/movies",
       name: "movies",
-      component: MoviesView
+      component: MoviesView,
     },
     {
       path: "/tv-shows",
       name: "tv-shows",
-      component: TvShowsView
+      component: TvShowsView,
     },
     {
       path: "/login",
       name: "login",
-      component: LoginView
+      component: LoginView,
     },
     {
       path: "/register",
       name: "register",
-      component: RegisterView
+      component: RegisterView,
     },
     {
       path: "/user",
       name: "user",
-      component: UserView
+      component: UserView,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/*",
@@ -59,3 +63,26 @@ export default new Router({
     }
   ]
 });
+
+// Ensure checked auth before each page load.
+router.beforeEach((to, from, next) => {
+  if (store.getters.isAuth) {
+    next();
+    return;
+  }
+
+  // check auth before first load or page reload to get token to get the user data
+  store.dispatch("checkAuth").then(() => {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+      if (store.getters.isAuth) {
+        next();
+        return;
+      }
+      next('/login');
+    } else {
+      next();
+    }
+  });
+});
+
+export default router;

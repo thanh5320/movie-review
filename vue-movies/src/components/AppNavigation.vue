@@ -2,7 +2,7 @@
   <div class="navigation">
     <ul>
       <li v-for="(link, index) in links" :key="index">
-        <router-link :to="link.url" @click="resetSearch">
+        <router-link :to="link.url">
           <font-awesome-icon :icon="link.icon" :transform="link.transform" size="2x" class="icon" />
           <br />
           <span>{{ link.text }}</span>
@@ -22,7 +22,7 @@
           <span>User</span>
         </router-link>
       </li>
-      <li>
+      <li v-if="!user">
         <router-link to="/register">
           <font-awesome-icon icon="won-sign" transform="shrink-5" size="2x" class="icon" />
           <span>Register</span>

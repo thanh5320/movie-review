@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import AppServices from '@/services/AppServices';
+import {destroyToken, getToken, saveToken} from "@/services/jwt";
 
 Vue.use(Vuex);
 
@@ -12,7 +13,8 @@ export default new Vuex.Store({
   },
   getters: {
     imgPath: state => `${state.baseUrl}w370_and_h556_bestv2`,
-    user: state => state.user
+    user: state => state.user,
+    isAuth: (state) => !!state.user,
   },
 
   mutations: {
@@ -35,24 +37,21 @@ export default new Vuex.Store({
         rating: info.rating,
         actor: info.actors
           .map(item => item.full_name)
-          .join(', ')
+          .join(', '),
+        comments: info.comments
       };
       Vue.set(state, 'itemInfo', itemInfo);
     },
     LOAD_USER: (state, { user }) => {
-      state.user = user;
-    }
+      Vue.set(state, 'user', user);
+    },
+    SET_AUTH: (state, { user, token }) => {
+        Vue.set(state, 'user', user);
+        saveToken(token);
+    },
   },
 
   actions: {
-    getInitialData: async ({ commit }) => {
-      const response = await Promise.all([
-        AppServices.getMe()
-      ]);
-
-      commit('LOAD_USER', {user: response.data.data})
-    },
-
     getItem: async ({ commit }, { id, type }) => {
       commit('RESET_ITEM');
       const [response] = await Promise.all([
@@ -65,18 +64,21 @@ export default new Vuex.Store({
       });
     },
 
-    setAuth: async ({ commit }, {id, username, phone_number, email, full_name}) => {
-      const user = {
-        username: username,
-        id: id,
-        phone_number: phone_number,
-        email: email,
-        full_name: full_name
-      };
+    checkAuth: async ({ commit, state }) => {
+      const token = getToken();
 
-      commit('LOAD_USER', {
-        user
-      })
+      if(token && !state.user){
+        await AppServices.getMe(token)
+            .then(response => commit("SET_AUTH", {user: response.data.data, token: token}))
+            .catch(() => destroyToken());
+      }
+    },
+
+    setAuth: async ({commit}, {token}) => {
+      const response = await AppServices.getMe(token);
+      const user = response.data.data;
+
+      commit("SET_AUTH", {user: user, token: token});
     }
   }
 });

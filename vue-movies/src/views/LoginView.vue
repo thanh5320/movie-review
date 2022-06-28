@@ -2,17 +2,17 @@
   <div class="container">
     <h1>Welcome to review film</h1>
 
-    <form class="form">
+    <form @submit="login" class="form">
       <input v-model="username" type="text" placeholder="Username">
       <input v-model="password" type="password" placeholder="Password">
-      <button @click="login()" id="login-button">Login</button>
+      <button type="submit">Login</button>
     </form>
   </div>
 </template>
 
 <script>
 import AppServices from "@/services/AppServices";
-import {saveToken} from "@/services/jwt";
+import {mapGetters} from "vuex";
 
 export default {
   name: "LoginView",
@@ -26,19 +26,20 @@ export default {
     async login() {
       let response = await AppServices.login(this.username, this.password);
       const token = response.data.data.token;
-      saveToken(token);
 
-      response = await AppServices.getMe();
-      const user = response.data.data;
       await this.$store.dispatch('setAuth', {
-        id: user.id,
-        username: user.username,
-        phone_number: user.phone_number,
-        email: user.email,
-        full_name: user.full_name
+        token: token
       });
       await this.$router.push('/');
     }
+  },
+  mounted() {
+    if(this.user != null){
+      this.$router.push('/');
+    }
+  },
+  computed: {
+    ...mapGetters(['user'])
   }
 }
 </script>
@@ -56,12 +57,12 @@ export default {
   transition-duration: 1s;
   font-weight: 200;
 }
-form {
+.form {
   padding: 20px 0;
   position: relative;
   z-index: 2;
 }
-form input {
+.form input {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -79,15 +80,15 @@ form input {
   transition-duration: 0.25s;
   font-weight: 300;
 }
-form input:hover {
+.form input:hover {
   background-color: rgba(255, 255, 255, 0.4);
 }
-form input:focus {
+.form input:focus {
   background-color: white;
   width: 300px;
   color: #53e3a6;
 }
-form button {
+.form button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -102,7 +103,7 @@ form button {
   font-size: 18px;
   transition-duration: 0.25s;
 }
-form button:hover {
+.form  button:hover {
   background-color: #f5f7f9;
 }
 .bg-bubbles li {

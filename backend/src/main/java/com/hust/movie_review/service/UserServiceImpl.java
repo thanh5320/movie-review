@@ -5,6 +5,7 @@ import com.hust.movie_review.config.exception.InValidException;
 import com.hust.movie_review.config.security.JwtUtils;
 import com.hust.movie_review.data.request.user.CreateUserRequest;
 import com.hust.movie_review.data.request.user.UpdateUserRequest;
+import com.hust.movie_review.data.response.UserResponse;
 import com.hust.movie_review.data.response.user.LoginResponse;
 import com.hust.movie_review.data.response.user.UserInfoResponse;
 import com.hust.movie_review.data.request.LoginRequest;
@@ -31,6 +32,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.hust.movie_review.data.mapper.UserMapper.toUserResponse;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -140,8 +143,8 @@ public class UserServiceImpl implements IUserService {
         return UserDetailsImpl.build(user);
     }
 
-    public User getCurrentUserByUsername(String username){
-        return userRepository.findByUsername(username);
+    public UserResponse getCurrentUserByUsername(String username){
+        return toUserResponse(userRepository.findByUsername(username));
     }
 
     @SneakyThrows

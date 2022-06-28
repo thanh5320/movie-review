@@ -1,7 +1,9 @@
 package com.hust.movie_review.service;
 
 import com.hust.movie_review.common.OffsetBasedPageable;
+import com.hust.movie_review.data.mapper.MovieMapper;
 import com.hust.movie_review.data.request.movie.StoreRequest;
+import com.hust.movie_review.data.response.MovieResponse;
 import com.hust.movie_review.models.Country;
 import com.hust.movie_review.models.Movie;
 import com.hust.movie_review.repositories.CountryRepository;
@@ -37,9 +39,9 @@ public class MovieServiceImpl extends BaseService<Movie> implements IMovieServic
     }
 
     @Override
-    public List<Movie> getTopMovieByType(int page, int pageSize, String type, String sortColumn){
+    public List<MovieResponse> getTopMovieByType(int page, int pageSize, String type, String sortColumn){
         Pageable pageable = new OffsetBasedPageable(page, pageSize, sortColumn);
-        return movieRepository.findMoviesByType(pageable, type).get().collect(Collectors.toList());
+        return MovieMapper.toMovieResponses(movieRepository.findMoviesByType(pageable, type).get().collect(Collectors.toList()));
     }
 
     @Override

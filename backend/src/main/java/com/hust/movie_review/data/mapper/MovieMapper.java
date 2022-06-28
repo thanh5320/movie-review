@@ -14,8 +14,10 @@ import java.util.stream.Collectors;
 import static com.hust.movie_review.data.mapper.ActorMapper.toActorResponseSimple;
 import static com.hust.movie_review.data.mapper.ActorMapper.toActorResponsesSimple;
 import static com.hust.movie_review.data.mapper.CategoryMapper.toCategoryResponseSimple;
+import static com.hust.movie_review.data.mapper.CommentMapper.toCommentResponses;
 import static com.hust.movie_review.data.mapper.CommentMapper.toCommentResponsesSimple;
 import static com.hust.movie_review.data.mapper.CountryMapper.toCountryResponseSimple;
+import static com.hust.movie_review.data.mapper.ReviewMapper.toReviewResponses;
 import static com.hust.movie_review.data.mapper.ReviewMapper.toReviewResponsesSimple;
 import static com.hust.movie_review.data.mapper.UserMapper.toUserResponseSimple;
 
@@ -27,8 +29,8 @@ public class MovieMapper {
                 .setCategory(toCategoryResponseSimple(movie.getCategory()))
                 .setCountry(toCountryResponseSimple(movie.getCountry()))
                 .setActors(toActorResponsesSimple(movie.getActors()))
-                .setComments(toCommentResponsesSimple(movie.getComments()))
-                .setReviews(toReviewResponsesSimple(movie.getReviews()));
+                .setComments(toCommentResponses(movie.getComments()))
+                .setReviews(toReviewResponses(movie.getReviews()));
     }
 
     public static List<MovieResponse> toMovieResponses(List<Movie> movies){

@@ -33,7 +33,6 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
-    @JsonBackReference
     private Movie movie;
 
     @Column(name = "rating", nullable = false)

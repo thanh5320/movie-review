@@ -7,8 +7,8 @@ import com.hust.movie_review.models.User;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.hust.movie_review.data.mapper.CommentMapper.toCommentResponsesSimple;
-import static com.hust.movie_review.data.mapper.ReviewMapper.toReviewResponsesSimple;
+import static com.hust.movie_review.data.mapper.CommentMapper.toCommentResponses;
+import static com.hust.movie_review.data.mapper.ReviewMapper.toReviewResponses;
 
 public class UserMapper {
     public static UserResponse toUserResponse(User user){
@@ -21,8 +21,8 @@ public class UserMapper {
                 .setStatus(user.isStatus())
                 .setCreatedAt(user.getCreatedAt())
                 .setUpdateAt(user.getUpdateAt())
-                .setComments(toCommentResponsesSimple(user.getComments()))
-                .setReviews(toReviewResponsesSimple(user.getReviews()))
+                .setComments(toCommentResponses(user.getComments()))
+                .setReviews(toReviewResponses(user.getReviews()))
                 .setRoles(Optional.ofNullable(user.getRoles()).orElse(new HashSet<>())
                         .stream()
                         .map(Role::getName).collect(Collectors.toSet()));

@@ -4,10 +4,12 @@ import com.hust.movie_review.data.request.user.UpdateUserRequest;
 import com.hust.movie_review.data.response.DfResponse;
 import com.hust.movie_review.data.request.user.CreateUserRequest;
 import com.hust.movie_review.data.response.user.UserInfoResponse;
+import com.hust.movie_review.models.Category;
 import com.hust.movie_review.service.template.IUserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/admin/user/")
@@ -16,6 +18,11 @@ public class AdminController {
 
     public AdminController(IUserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("listing")
+    public DfResponse<List<Category>> listing(){
+        return DfResponse.okEntity(null);
     }
 
     @PostMapping("create")

@@ -1,8 +1,10 @@
 package com.hust.movie_review.controllers;
 
+import com.hust.movie_review.data.mapper.MovieMapper;
 import com.hust.movie_review.data.response.DfResponse;
 import com.hust.movie_review.data.request.movie.StoreRequest;
 import com.hust.movie_review.data.response.DfResponseList;
+import com.hust.movie_review.data.response.MovieResponse;
 import com.hust.movie_review.models.Movie;
 import com.hust.movie_review.service.template.IMovieService;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +23,14 @@ public class MovieController {
     }
 
     @GetMapping("/listing")
-    public DfResponse<List<Movie>> listing(){
-        List<Movie> movies = movieService.listing();
+    public DfResponse<List<MovieResponse>> listing(){
+        List<MovieResponse> movies = MovieMapper.toMovieResponses(movieService.listing());
         return DfResponse.okEntity(movies);
     }
 
     @GetMapping("/detail/{id}")
-    public DfResponse<Movie> detail(@PathVariable int id){
-        Movie movie = movieService.detail(id);
+    public DfResponse<MovieResponse> detail(@PathVariable int id){
+        MovieResponse movie = MovieMapper.toMovieResponse(movieService.detail(id));
         return DfResponse.okEntity(movie);
     }
 
@@ -48,12 +50,12 @@ public class MovieController {
     }
 
     @GetMapping("upcoming")
-    public DfResponseList<Movie> getUpcoming(
+    public DfResponseList<MovieResponse> getUpcoming(
             @RequestParam String type,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "page_size", defaultValue = "10", required = false) int pageSize
     ){
-        List<Movie> topMovie = movieService.getTopMovieByType(page-1, pageSize, type, "createdAt");
+        List<MovieResponse> topMovie = movieService.getTopMovieByType(page-1, pageSize, type, "createdAt");
         int total = movieService.countByType(type);
         return DfResponseList.okEntity(topMovie, total);
     }

@@ -74,9 +74,9 @@ public class Movie {
     @JsonManagedReference
     Set<Actor> actors;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="movie")
     private Set<Comment> comments;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="movie")
     private Set<Review> reviews;
 }

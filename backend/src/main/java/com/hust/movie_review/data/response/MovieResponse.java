@@ -40,7 +40,7 @@ public class MovieResponse {
 
     private String type;
 
-    Set<ActorResponse> actors;
+    private Set<ActorResponse> actors;
 
     private Set<CommentResponse> comments;
 

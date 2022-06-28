@@ -52,7 +52,7 @@
   </div>
 </template>
 <script>
-import { getInfo, updateUser, deleteUser } from '@/api/user'
+import { updateUser, deleteUser, listingUser} from '@/api/user'
 
 export default {
   filters: {
@@ -79,7 +79,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getInfo().then(response => {
+      listingUser().then(response => {
         this.list = response.data
         if (this.list.length > 0) {
           this.user = this.list[0]

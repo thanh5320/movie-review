@@ -41,6 +41,7 @@ export default {
               message: 'Create success',
               type: 'success'
             })
+            this.$router.push('/quanlyphim/list_category')
           }
         }
       )

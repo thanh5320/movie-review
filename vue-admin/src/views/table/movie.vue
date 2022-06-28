@@ -18,6 +18,11 @@
           {{ scope.row.title }}
         </template>
       </el-table-column>
+      <el-table-column label="Mô tả phim">
+        <template slot-scope="scope">
+          {{ scope.row.description }}
+        </template>
+      </el-table-column>
       <el-table-column label="Đạo diễn" width="140" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.director }}</span>
@@ -120,19 +125,6 @@ export default {
         this.listLoading = false
       })
     },
-    // createMovie(movie) {
-    //   createCategory(movie).then(
-    //     response => {
-    //       if (response.code === 0) {
-    //         this.$notify({
-    //           message: 'Create success',
-    //           type: 'success'
-    //         })
-    //         this.dialogFormVisible = false
-    //         this.fetchData()
-    //       }
-    //     })
-    // },
     handleUpdate(index) {
       this.movie = this.list[index]
       this.dialogFormVisible = true

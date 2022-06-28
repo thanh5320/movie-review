@@ -18,7 +18,7 @@
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="Mô tả" width="300">
+      <el-table-column label="Mô tả">
         <template slot-scope="scope">
           <span>{{ scope.row.description }}</span>
         </template>

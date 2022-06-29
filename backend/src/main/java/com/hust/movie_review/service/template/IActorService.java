@@ -4,7 +4,7 @@ import com.hust.movie_review.data.request.actor.StoreRequest;
 import com.hust.movie_review.data.request.actor.UpdateRequest;
 import com.hust.movie_review.models.Actor;
 
-public interface IActorService extends IService<Actor> {
+public interface IActorService extends IService<Actor, Integer> {
     Actor insert(StoreRequest request);
 
     Actor update(UpdateRequest request);

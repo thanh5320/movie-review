@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class ReviewServiceImpl extends BaseService<Review> implements IReviewService {
+public class ReviewServiceImpl extends BaseService<Review, Integer> implements IReviewService {
     IReviewRepository reviewRepository;
     IMovieRepository movieRepository;
     IUserRepository userRepository;

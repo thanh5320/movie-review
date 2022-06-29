@@ -4,7 +4,7 @@ import com.hust.movie_review.config.exception.ApiException;
 import com.hust.movie_review.data.request.category.StoreRequest;
 import com.hust.movie_review.data.request.category.UpdateRequest;
 import com.hust.movie_review.models.Category;
-import com.hust.movie_review.repositories.CategoryRepository;
+import com.hust.movie_review.repositories.ICategoryRepository;
 import com.hust.movie_review.service.template.ICategoryService;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CategoryServiceImpl extends BaseService<Category> implements ICategoryService {
-    CategoryRepository categoryRepository;
+public class CategoryServiceImpl extends BaseService<Category, Integer> implements ICategoryService {
+    ICategoryRepository categoryRepository;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository){
+    public CategoryServiceImpl(ICategoryRepository categoryRepository){
         super(categoryRepository);
         this.categoryRepository = categoryRepository;
     }

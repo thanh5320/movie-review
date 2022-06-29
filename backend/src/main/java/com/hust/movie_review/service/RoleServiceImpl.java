@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class RoleServiceImpl extends BaseService<Role> implements IRoleService {
+public class RoleServiceImpl extends BaseService<Role, Integer> implements IRoleService {
     IRoleRepository roleRepository;
 
     public RoleServiceImpl(IRoleRepository roleRepository){

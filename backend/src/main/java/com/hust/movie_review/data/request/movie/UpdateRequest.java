@@ -8,14 +8,17 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Accessors(chain = true)
-public class StoreRequest {
+public class UpdateRequest {
+    @NotNull(message = "Id không được bỏ trống")
+    private int id;
+
     @NotEmpty(message = "Tiêu đề không được bỏ trống")
     private String title;
 
-    private int category;
+    private int categoryId;
 
     @NotEmpty(message = "Quốc gia không được bỏ trống")
-    private String country;
+    private String countryCode;
 
     @NotEmpty(message = "Đạo diễn không được bỏ trống")
     private String director;
@@ -30,10 +33,4 @@ public class StoreRequest {
 
     @NotNull(message = "Trailer phim không được bỏ trống")
     private String trailer;
-
-    @NotNull(message = "Thumanil không được bỏ trống")
-    private String thumbnail;
-
-    @NotNull(message = "Type không được bỏ trống")
-    private String type;
 }

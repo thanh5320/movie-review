@@ -1,6 +1,7 @@
 package com.hust.movie_review.controllers;
 
 import com.hust.movie_review.data.mapper.MovieMapper;
+import com.hust.movie_review.data.request.movie.UpdateRequest;
 import com.hust.movie_review.data.response.DfResponse;
 import com.hust.movie_review.data.request.movie.StoreRequest;
 import com.hust.movie_review.data.response.DfResponseList;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
-
 @RestController
 @RequestMapping("api/movie")
 public class MovieController {
@@ -74,6 +74,12 @@ public class MovieController {
     @PostMapping("store")
     public DfResponse<MovieResponse> store(@RequestBody @Valid StoreRequest request){
         Movie movie = this.movieService.insert(request);
+        return DfResponse.okEntity(MovieMapper.toMovieResponse(movie));
+    }
+
+    @PostMapping("update")
+    public DfResponse<MovieResponse> update(@RequestBody @Valid UpdateRequest request){
+        Movie movie = this.movieService.update(request);
         return DfResponse.okEntity(MovieMapper.toMovieResponse(movie));
     }
 }

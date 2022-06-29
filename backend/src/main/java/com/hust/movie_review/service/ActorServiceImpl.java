@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class ActorServiceImpl extends BaseService<Actor> implements IActorService {
+public class ActorServiceImpl extends BaseService<Actor, Integer> implements IActorService {
     IActorRepository actorRepository;
     ICountryRepository countryRepository;
 

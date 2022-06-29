@@ -8,7 +8,7 @@ import com.hust.movie_review.service.template.ICountryService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CountryServiceImpl extends BaseService<Country> implements ICountryService {
+public class CountryServiceImpl extends BaseService<Country, String> implements ICountryService {
     ICountryRepository countryRepository;
 
     public CountryServiceImpl(ICountryRepository countryRepository) {

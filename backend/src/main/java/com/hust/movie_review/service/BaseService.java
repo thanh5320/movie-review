@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public abstract class BaseService<T> {
-    private final JpaRepository<T, Integer> repository;
+public abstract class BaseService<T, K> {
+    private final JpaRepository<T, K> repository;
 
-    public BaseService(JpaRepository<T, Integer> repository) {
+    public BaseService(JpaRepository<T, K> repository) {
         this.repository = repository;
     }
 
@@ -44,7 +44,7 @@ public abstract class BaseService<T> {
     }
 
     @SneakyThrows
-    public boolean delete(int id) {
+    public boolean delete(K id) {
         Optional<T> optional = repository.findById(id);
         if(optional.isEmpty()){
             throw new ApiException("Không tìm thấy đối tượng có id tương ứng");
@@ -59,7 +59,7 @@ public abstract class BaseService<T> {
         return true;
     }
 
-    public T detail(int id) {
+    public T detail(K id) {
         Optional<T> optional = repository.findById(id);
         return optional.orElse(null);
     }

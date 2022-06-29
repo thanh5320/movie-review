@@ -1,11 +1,8 @@
 package com.hust.movie_review.data.response;
 
-import com.hust.movie_review.models.Movie;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.Set;
 

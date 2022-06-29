@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CommentServiceImpl extends BaseService<Comment> implements ICommentService {
+public class CommentServiceImpl extends BaseService<Comment, Integer> implements ICommentService {
     ICommentRepository commentRepository;
     IUserRepository userRepository;
     IMovieRepository movieRepository;

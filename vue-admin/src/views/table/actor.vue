@@ -54,21 +54,25 @@
         <el-form-item label="Họ tên" prop="name">
           <el-input v-model="actor.full_name" />
         </el-form-item>
-        <el-form-item label="Quốc gia" prop="country">
-          <el-input v-model="actor.country.name" />
-        </el-form-item>
         <el-form-item label="Năm sinh" prop="year_birthday">
-          <el-input v-model="actor.year_birthday" />
+          <el-input v-model="actor.year_birthday" type="number" />
         </el-form-item>
         <el-form-item label="Giới tính" prop="gender">
-          <el-input v-model="actor.gender" />
+          <el-select v-model="actor.gender">
+            <el-option
+              v-for="item in valueGender"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button v-if="!dialogCreate" type="primary" @click="updateActor(category)">
+        <el-button v-if="!dialogCreate" type="primary" @click="updateActor()">
           Update
         </el-button>
       </div>
@@ -96,7 +100,17 @@ export default {
       actor: null,
       listLoading: true,
       dialogFormVisible: false,
-      dialogCreate: false
+      dialogCreate: false,
+      valueGender: [
+        {
+          value: 'male',
+          label: 'Male'
+        },
+        {
+          value: 'female',
+          label: 'Female'
+        }
+      ]
     }
   },
   created() {
@@ -118,9 +132,9 @@ export default {
         this.listLoading = false
       })
     },
-    updateActor(actor) {
-      console.log(actor)
-      updateActor(actor).then(
+    updateActor() {
+      this.actor.country_code = this.actor.country.code
+      updateActor(this.actor).then(
         response => {
           if (response.code === 200) {
             this.$notify({

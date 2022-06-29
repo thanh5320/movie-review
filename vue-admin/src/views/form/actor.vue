@@ -45,7 +45,7 @@
 
 <script>
 import { createActor } from '@/api/actor'
-import { getListCountry } from '@/api/country';
+import { getListCountry } from '@/api/country'
 
 export default {
   data() {

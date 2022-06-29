@@ -59,32 +59,29 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- <el-dialog title="Edit category" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="category" label-position="left" style="width: 400px; margin-left:50px;">
+    <el-dialog title="Edit movie" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :model="movie" label-position="left" style="width: 400px; margin-left:50px;">
         <el-form-item label="Name" prop="title">
-          <el-input v-model="category.name" />
+          <el-input v-model="movie.title" />
         </el-form-item>
         <el-form-item label="Description" prop="description">
-          <el-input v-model="category.description" />
+          <el-input v-model="movie.description" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button v-if="!dialogCreate" type="primary" @click="updateCategory(category)">
+        <el-button type="primary" @click="updateMovie(movie)">
           Update
         </el-button>
-        <el-button v-if="dialogCreate" type="primary" @click="createMovie(category)">
-          Create
-        </el-button>
       </div>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getListMovie } from '@/api/movie'
+import { deleteMovie, getListMovie, updateMovie } from '@/api/movie'
 
 export default {
   filters: {
@@ -125,18 +122,35 @@ export default {
         this.listLoading = false
       })
     },
+    updateMovie(params) {
+      params.country_code = params.country.code
+      params.category_id = params.category.id
+
+      updateMovie(params).then(response => {
+        if (response.code === 200) {
+          this.$notify({
+            message: 'Update success',
+            type: 'success'
+          })
+          this.dialogFormVisible = false
+        }
+      })
+    },
     handleUpdate(index) {
       this.movie = this.list[index]
       this.dialogFormVisible = true
       this.dialogCreate = false
     },
-    handleCreate() {
-      this.movie = {
-        name: null,
-        description: null
-      }
-      this.dialogFormVisible = true
-      this.dialogCreate = true
+    handleDelete(index) {
+      deleteMovie({ id: this.list[index].id }).then(response => {
+        if (response.code === 200) {
+          this.$notify({
+            message: 'Update success',
+            type: 'success'
+          })
+          this.fetchData()
+        }
+      })
     }
   }
 }

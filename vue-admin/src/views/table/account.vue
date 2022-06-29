@@ -33,11 +33,6 @@
           <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Password" width="150" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.password }}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="Actions" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.$index)">
@@ -49,6 +44,27 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog title="Edit movie" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :model="user" label-position="left" style="width: 400px; margin-left:50px;">
+        <el-form-item label="Full name" prop="title">
+          <el-input v-model="user.full_name" />
+        </el-form-item>
+        <el-form-item label="Email" prop="description">
+          <el-input v-model="user.email" />
+        </el-form-item>
+        <el-form-item label="Phone number" prop="description">
+          <el-input v-model="user.phone_number" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          Cancel
+        </el-button>
+        <el-button type="primary" @click="updateUser(user)">
+          Update
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -102,6 +118,7 @@ export default {
             })
             this.dialogFormVisible = false
           }
+          this.fetchData()
         }
       )
     },

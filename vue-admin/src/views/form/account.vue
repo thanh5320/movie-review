@@ -18,7 +18,7 @@
       </el-form-item>
       <el-form-item label="Role">
         <el-col :span="10">
-          <el-input v-model="form.roles" />
+          <el-input v-model="form.roles" readonly />
         </el-col>
       </el-form-item>
       <el-form-item>
@@ -38,7 +38,7 @@ export default {
         username: '',
         password: '',
         email: '',
-        roles: ''
+        roles: ['CRITIC']
       }
     }
   },
@@ -58,6 +58,7 @@ export default {
               type: 'success'
             })
           }
+          this.$router.push('/quanlytaikhoan/list')
         }
       )
     },

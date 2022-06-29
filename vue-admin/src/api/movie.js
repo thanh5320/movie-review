@@ -15,3 +15,18 @@ export function createMovie(params) {
     data: params
   })
 }
+
+export function updateMovie(params) {
+  return request({
+    url: '/movie/update',
+    method: 'post',
+    data: params
+  })
+}
+
+export function deleteMovie(params) {
+  return request({
+    url: `movie/delete/${params.id}`,
+    method: 'post'
+  })
+}

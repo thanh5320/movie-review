@@ -12,6 +12,7 @@ import com.hust.movie_review.service.template.IReviewService;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,6 +50,30 @@ public class ReviewServiceImpl extends BaseService<Review, Integer> implements I
         review.setUser(user);
         reviewRepository.save(review);
 
+        // calc movie rating
+        List<Review> lst = reviewRepository.findByUserId(user.getId());
+        lst.forEach(System.out::println);
+        float ratingAvg = 0;
+        for(Review itm: lst){
+            ratingAvg += (float) itm.getRating();
+        }
+
+        ratingAvg = ratingAvg / lst.size();
+        movie.setRating(ratingAvg);
+        movieRepository.save(movie);
+
         return review;
+    }
+
+    @Override
+    public Boolean checkReview(int movieId, int userId) {
+        List<Review> lst = reviewRepository.findByUserId(userId);
+        for(Review itm: lst){
+            if(itm.getMovie().getId() == movieId){
+                return false;
+            }
+        }
+
+        return true;
     }
 }

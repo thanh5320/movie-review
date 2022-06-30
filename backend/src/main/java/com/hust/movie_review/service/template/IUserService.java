@@ -1,6 +1,7 @@
 package com.hust.movie_review.service.template;
 
 import com.hust.movie_review.data.request.user.CreateUserRequest;
+import com.hust.movie_review.data.request.user.RegisterRequest;
 import com.hust.movie_review.data.request.user.UpdateUserRequest;
 import com.hust.movie_review.data.response.user.LoginResponse;
 import com.hust.movie_review.data.response.user.UserInfoResponse;
@@ -21,4 +22,6 @@ public interface IUserService extends UserDetailsService {
     String deleteUser(int id);
 
     List<User> listing();
+
+    UserInfoResponse registerUser(RegisterRequest request);
 }

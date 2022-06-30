@@ -12,6 +12,9 @@ import com.hust.movie_review.service.template.ICommentService;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -48,7 +51,8 @@ public class CommentServiceImpl extends BaseService<Comment, Integer> implements
         Comment comment = new Comment();
         comment.setComment(request.getComment())
                 .setMovie(movie)
-                .setUser(user);
+                .setUser(user)
+                .setCreatedAt(Date.from(Instant.now()));
 
         commentRepository.save(comment);
         return comment;

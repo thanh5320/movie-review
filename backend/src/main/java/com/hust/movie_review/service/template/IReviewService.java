@@ -5,4 +5,5 @@ import com.hust.movie_review.models.Review;
 
 public interface IReviewService extends IService<Review, Integer> {
     Review insert(StoreRequest request);
+    Boolean checkReview(int movieId, int userId);
 }

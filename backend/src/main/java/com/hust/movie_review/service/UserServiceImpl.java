@@ -5,6 +5,7 @@ import com.hust.movie_review.config.exception.InValidException;
 import com.hust.movie_review.config.security.JwtUtils;
 import com.hust.movie_review.data.request.LoginRequest;
 import com.hust.movie_review.data.request.user.CreateUserRequest;
+import com.hust.movie_review.data.request.user.RegisterRequest;
 import com.hust.movie_review.data.request.user.UpdateUserRequest;
 import com.hust.movie_review.data.response.user.LoginResponse;
 import com.hust.movie_review.data.response.user.UserInfoResponse;
@@ -26,10 +27,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,7 +59,7 @@ public class UserServiceImpl extends BaseService<User, Integer> implements IUser
     @SneakyThrows
     @Override
     public UserInfoResponse createUser(CreateUserRequest request) {
-        checkAlreadyUser(request);
+        checkAlreadyUser(request.getUsername(), request.getEmail());
 
         // set property for new user
         User newUser = new User();
@@ -95,6 +93,33 @@ public class UserServiceImpl extends BaseService<User, Integer> implements IUser
         return response;
     }
 
+    public UserInfoResponse registerUser(RegisterRequest request){
+        checkAlreadyUser(request.getUsername(), request.getEmail());
+
+        // set property for new user
+        User newUser = new User();
+        newUser.setUsername(request.getUsername());
+        newUser.setFullName(request.getFullName());
+        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        newUser.setStatus(true);
+        newUser.setEmail(request.getEmail());
+        newUser.setPhoneNumber(request.getPhoneNumber());
+
+        newUser.setRoles(new HashSet<>(Collections.singletonList(roleRepository.findByName("MEMBER"))));
+        User userEntity = userRepository.save(newUser);
+
+        // set response
+        UserInfoResponse response = new UserInfoResponse();
+        response.setId(userEntity.getId());
+        response.setEmail(userEntity.getEmail());
+        response.setUsername(userEntity.getUsername());
+        response.setFulName(userEntity.getFullName());
+        response.setStatus(true);
+        response.setRoles(new HashSet<>(List.of("MEMBER")));
+
+        return response;
+    }
+
     @Override
     public LoginResponse login(LoginRequest request, AuthenticationManager authenticationManager) {
         // validate username and password
@@ -119,14 +144,14 @@ public class UserServiceImpl extends BaseService<User, Integer> implements IUser
     }
 
     @SneakyThrows
-    private void checkAlreadyUser(CreateUserRequest request) {
+    private void checkAlreadyUser(String username, String email) {
         User oldUSer;
-        oldUSer = userRepository.findByUsername(request.getUsername());
+        oldUSer = userRepository.findByUsername(username);
         if (ObjectUtils.isNotEmpty(oldUSer)) {
             throw new InValidException("Username already exists");
         }
-        oldUSer = userRepository.findByEmail(request.getEmail());
-        if (request.getEmail()!=null && ObjectUtils.isNotEmpty(oldUSer)) {
+        oldUSer = userRepository.findByEmail(email);
+        if (email !=null && ObjectUtils.isNotEmpty(oldUSer)) {
             throw new InValidException("Email already exists");
         }
     }

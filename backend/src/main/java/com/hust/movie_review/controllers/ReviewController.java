@@ -33,4 +33,9 @@ public class ReviewController {
         );
     }
 
+    @GetMapping("check-review/{movieId}/{userId}")
+    public DfResponse<Boolean> checkReview(@PathVariable int movieId, @PathVariable int userId){
+        return DfResponse.okEntity(reviewService.checkReview(movieId, userId));
+    }
+
 }

@@ -1,0 +1,61 @@
+version: '3.0'
+
+networks:
+  movies:
+    driver: bridge
+
+services:
+
+  mysql-movies:
+    image: mysql:latest
+    volumes:
+      - ${MYSQL_DATA}:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    networks:
+      - movies
+    ports:
+      - 3306:3306
+    container_name: mysql-movies
+
+  backend:
+    image: backend-movies:v1.0.0
+    container_name: backend-movies
+    expose:
+      - 8082
+    environment:
+      SPRING_APPLICATION_JSON: '{
+            "spring.datasource.url"  : "jdbc:mysql://mysql-movies:3306/movie_review"}'
+    networks:
+      - movies
+    ports:
+      - 8082:8082
+    restart:
+      on-failure
+    depends_on:
+      - mysql-movies
+    links:
+      - mysql-movies
+
+  vue-admin:
+    image: vue-admin:v1.0.0
+    container_name: vue-admin
+    expose:
+      - 9528
+    networks:
+      - movies
+    ports:
+      - 9528:80
+
+  vue-movies:
+    image: vue-movies:v1.0.0
+    container_name: vue-movies
+    expose:
+      - 8080
+    networks:
+      - movies
+    ports:
+      - 8080:80

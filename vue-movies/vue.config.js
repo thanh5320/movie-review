@@ -1,10 +1,10 @@
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 module.exports = {
-  configureWebpack: {
-    plugins: [
-      new BundleAnalyzerPlugin()
-    ]
-  },
+  // configureWebpack: {
+  //   plugins: [
+  //     new BundleAnalyzerPlugin()
+  //   ]
+  // },
   css: {
     loaderOptions: {
       sass: {

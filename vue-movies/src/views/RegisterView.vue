@@ -2,17 +2,40 @@
   <div class="container">
     <h1>Welcome to review film</h1>
 
-    <form class="form">
-      <input type="text" placeholder="Username">
-      <input type="password" placeholder="Password">
-      <button type="submit" id="login-button">Login</button>
-    </form>
+    <div class="form">
+      <input type="text" placeholder="Username" name="username" v-model="username">
+      <input type="text" placeholder="Full name" name="full_name" v-model="full_name">
+      <input type="text" placeholder="Phone number" name="phone_number" v-model="phone_number">
+      <input type="password" placeholder="Password" v-model="password">
+      <button @click="register" id="login-button">Login</button>
+    </div>
   </div>
 </template>
 
 <script>
+import AppServices from "@/services/AppServices";
+
 export default {
-  name: "RegisterForm"
+  name: "RegisterForm",
+  data(){
+    return {
+      username: null,
+      full_name: null,
+      phone_number: null,
+      password: null
+    }
+  },
+  methods: {
+    register(){
+      AppServices.register({username: this.username, full_name: this.full_name, phone_number: this.phone_number, password: this.password}).then(
+        response => {
+          if(response.data.code === 200){
+            this.$router.push("/login");
+          }
+        }
+      )
+    }
+  }
 }
 </script>
 
@@ -30,12 +53,12 @@ export default {
   transition-timing-function: ease-in-put;
   font-weight: 200;
 }
-form {
+.form {
   padding: 20px 0;
   position: relative;
   z-index: 2;
 }
-form input {
+.form input {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -53,15 +76,15 @@ form input {
   transition-duration: 0.25s;
   font-weight: 300;
 }
-form input:hover {
+.form input:hover {
   background-color: rgba(255, 255, 255, 0.4);
 }
-form input:focus {
+.form input:focus {
   background-color: white;
   width: 300px;
   color: #53e3a6;
 }
-form button {
+.form button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -76,7 +99,7 @@ form button {
   font-size: 18px;
   transition-duration: 0.25s;
 }
-form button:hover {
+.form button:hover {
   background-color: #f5f7f9;
 }
 .bg-bubbles li {

@@ -16,6 +16,10 @@ export default {
       }
     });
   },
+  checkReview(userId, movieId){
+    const url = `review/check-review/${movieId}/${userId}`;
+    return API.get(url);
+  },
   search(query, page) {
     const url = `movie/search?search=${query}&page=${page}`;
     return API.get(url);
@@ -43,6 +47,21 @@ export default {
   getTvShowsOnAir(page){
     const url = `movie/upcoming?type=tv&page=1&page_size=${page}`;
     return API.get(url);
+  },
+  addComment(userId, movieId, comment){
+    const url = `comment/store`;
+    return API.post(url, {user_id: userId, movie_id: movieId, comment: comment},
+        {headers: {Authorization: `Bearer ${getToken()}` }}
+    );
+  },
+  addReview(userId, movieId, rating){
+    const url = `review/store`;
+    return API.post(url, {rating: rating, movie_id: movieId, user_id: userId},
+        {headers: {Authorization: `Bearer ${getToken()}` }}
+    );
+  },
+  register(params){
+    const url = `user/register`;
+    return API.post(url, params, {headers: {Authorization: `Bearer ${getToken()}` }});
   }
-
 };

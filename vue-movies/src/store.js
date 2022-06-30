@@ -26,7 +26,7 @@ export default new Vuex.Store({
     },
     LOAD_ITEM: (state, { type, info }) => {
       const itemInfo = {
-        type,
+        id: info.id,
         title: info.title,
         year: info.year,
         release_year: info.release_year,
@@ -38,7 +38,9 @@ export default new Vuex.Store({
         actor: info.actors
           .map(item => item.full_name)
           .join(', '),
-        comments: info.comments
+        comments: info.comments,
+        reviews: info.reviews,
+        type: info.type
       };
       Vue.set(state, 'itemInfo', itemInfo);
     },
@@ -79,6 +81,11 @@ export default new Vuex.Store({
       const user = response.data.data;
 
       commit("SET_AUTH", {user: user, token: token});
+    },
+
+    deleteAuth: async ({commit}) => {
+      commit("SET_AUTH", {user: null, token: null})
+      destroyToken();
     }
   }
 });

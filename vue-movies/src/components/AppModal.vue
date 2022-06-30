@@ -9,7 +9,7 @@
               <img :src="urlImg" />
             </figure>
             <ScoreIndicator
-              :score="itemInfo.rating"
+              :score="Math.round(itemInfo.rating * 100) / 100"
               size="82"
               stroke-width="5"
               stroke-color="#ff6633"
@@ -47,14 +47,44 @@
       <button title="Close" class="close_modal" @click="closeModal">
         <font-awesome-icon icon="times" transform="shrink-6" size="1x" />
       </button>
+
+      <!-- RATING - Form -->
+      <div class="rating-form" v-if="!checkHiddenRatingForm">
+        <fieldset class="form-group">
+          <legend class="form-legend">Rating:</legend>
+          <div class="form-item">
+
+            <label v-for="(n,index) in 5" :for="'rating-' + n" :key="index" :data-value="n">
+              <span class="rating-star">
+                <i class="fa fa-star-o"></i>
+                <i class="fa fa-star"></i>
+              </span>
+              <input :id="'rating-' + n" name="rating" type="radio" :value="n" v-model="rating" />
+              <span class="ir">{{ n }}</span>
+            </label>
+            <br /><br />
+            <div class="form-action">
+              <button @click="rateMovie" class="button-rate">Rate</button>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div v-if="checkHiddenRatingForm && user">
+        Your rated
+      </div>
+
       <!-- comment box -->
       <div class="comment-box">
         <h5>Total comment ({{itemInfo.comments.length}})</h5>
+        <div class="comment-area" v-if="user">
+          <textarea class="comment-input" v-model="comment"></textarea>
+          <button class="button-6" role="button" @click="addComment">Add comment</button>
+        </div>
         <div v-for="(comment,id) in itemInfo.comments" :key="id" class="comment-line" style="border: 2px solid; padding: 10px">
           <div class="comment-line-container">
             <div class="d-flex flex-column ml-3">
               <div class="d-flex flex-row post-title">
-                <h5>{{comment.comment}}</h5><span class="ml-2">(Jesshead)</span>
+                <h5>{{comment.comment}}</h5><span class="ml-2">({{comment.user.username}})</span>
               </div>
               <div>
                 <span class="mr-2 dot"></span><span> {{toHumanTime(comment.created_at)}}</span>
@@ -69,16 +99,28 @@
 
 <script>
 import ScoreIndicator from '@/components/ScoreIndicator';
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 import dayjs from 'dayjs'
 import {toHumanTime} from "@/helpers";
+import AppServices from "@/services/AppServices";
 
 export default {
   name: 'Modal',
   components: { ScoreIndicator },
+  data(){
+    return {
+      comment: null,
+      yourRating: 0,
+      rating: 0,
+      checkHiddenRatingForm: false
+    };
+  },
+  mounted() {
+    this.sortComment();
+    this.checkHiddenRatingFormMethod();
+  },
   computed: {
-    ...mapState(['type', 'itemInfo']),
-    ...mapGetters(['imgPath']),
+    ...mapState(['itemInfo', 'user']),
     showItemInfo() {
       return Object.keys(this.itemInfo).length;
     },
@@ -100,9 +142,43 @@ export default {
   methods: {
     closeModal() {
       this.$emit('close-modal');
+      this.$router.go(0);
     },
     toHumanTime(timestamp){
       return toHumanTime(timestamp);
+    },
+    addComment(){
+      AppServices.addComment(this.user.id, this.itemInfo.id, this.comment).then(response => {
+        if(response.data.code === 200){
+          this.comment = null;
+          this.$store.dispatch('getItem', {id: this.itemInfo.id, type: this.itemInfo.type});
+          this.sortComment();
+        }
+        this.comment = null;
+      });
+    },
+    checkHiddenRatingFormMethod(){
+        AppServices.checkReview(this.user.id, this.itemInfo.id).then(response => {
+        if(response.data.code === 200){
+          this.checkHiddenRatingForm = response.data.data;
+        }
+      })
+
+      this.checkHiddenRatingForm = true;
+    },
+    sortComment(){
+      this.itemInfo.comments.sort(function(a,b){
+        return b.created_at - a.created_at;
+      });
+    },
+    rateMovie(){
+      AppServices.addReview(this.user.id, this.itemInfo.id, this.rating).then(response => {
+        if(response.data.code === 200) {
+          this.$store.dispatch('getItem', {id: this.itemInfo.id, type: this.itemInfo.type});
+          this.checkHiddenRatingForm = true;
+        }
+        this.comment = null;
+      })
     }
   }
 };
@@ -262,6 +338,10 @@ a {
   }
 }
 
+.button-rate{
+  color: black;
+}
+
 .comments {
   text-decoration: underline;
   text-underline-position: under;
@@ -275,5 +355,64 @@ a {
   background-color: #bbb;
   border-radius: 50%;
   display: inline-block;
+}
+
+.comment-area{
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-input{
+  width: 99%;
+  height: 50px;
+  border: 1px solid;
+}
+
+ /* CSS */
+.button-6 {
+ align-items: center;
+ background-color: #FFFFFF;
+ border: 1px solid rgba(0, 0, 0, 0.1);
+ border-radius: .25rem;
+ box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+ box-sizing: border-box;
+ color: rgba(0, 0, 0, 0.85);
+ cursor: pointer;
+ display: inline-flex;
+ font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+ font-weight: 600;
+ justify-content: center;
+ line-height: 1.25;
+ margin: 0;
+ min-height: 3rem;
+ padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+ position: relative;
+ text-decoration: none;
+ transition: all 250ms;
+ user-select: none;
+ -webkit-user-select: none;
+ touch-action: manipulation;
+ vertical-align: baseline;
+ width: auto;
+}
+
+.button-6:hover,
+.button-6:focus {
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.button-6:hover {
+  transform: translateY(-1px);
+}
+
+.button-6:active {
+  background-color: #F0F0F1;
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+  color: rgba(0, 0, 0, 0.65);
+  transform: translateY(0);
 }
 </style>

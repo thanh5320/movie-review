@@ -79,8 +79,9 @@ export default {
     ...mapGetters(['user'])
   },
   methods:{
-    logout: {
-
+    logout() {
+      this.$store.dispatch('deleteAuth');
+      this.$router.go(0);
     },
     toHumanTime(timestamp){
       return toHumanTime(timestamp);

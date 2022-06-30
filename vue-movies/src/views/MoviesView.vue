@@ -1,8 +1,8 @@
 <template>
   <div>
     <h2 class="title">
-      <font-awesome-icon 
-        icon="film" 
+      <font-awesome-icon
+        icon="film"
         size="1x" />&nbsp;
         Upcoming Movies
       </h2>

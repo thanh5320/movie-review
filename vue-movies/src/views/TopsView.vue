@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2 class="title">
-      <font-awesome-icon 
+      <font-awesome-icon
         icon="film"
         size="1x" />&nbsp;
       <font-awesome-icon
@@ -10,7 +10,7 @@
         size="1x" />&nbsp;
       Top 10 rated Movies & TV shows
     </h2>
-    <ItemList :results="resultsMovie" type="movie" @item-clicked="viewDetailInfo" />
+    <ItemList :results="resultsMovie" type="movie" @item-clicked="viewDetailInfo" @load-again="fetchTops"/>
 
     <h2 class="title">
       <font-awesome-icon
@@ -21,8 +21,8 @@
     <ItemList :results="resultsFilm" type="film" @item-clicked="viewDetailInfo" />
 
     <h2 class="title">
-      <font-awesome-icon 
-        icon="tv" 
+      <font-awesome-icon
+        icon="tv"
         transform="shrink-3"
         size="1x" />&nbsp;
         Top 10 rated TV shows

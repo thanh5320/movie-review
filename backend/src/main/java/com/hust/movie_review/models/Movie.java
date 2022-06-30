@@ -74,6 +74,7 @@ public class Movie {
     @JsonManagedReference
     Set<Actor> actors;
 
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy="movie")
     private Set<Comment> comments;
 

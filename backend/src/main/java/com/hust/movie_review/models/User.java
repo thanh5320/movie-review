@@ -43,6 +43,7 @@ public class User {
 
     private boolean status;
 
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy="user")
     private Set<Comment> comments;
 
